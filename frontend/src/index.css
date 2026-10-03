@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+@import 'tailwindcss';
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: #0f1220;
+  overflow: hidden;
+}
+
+* {
+  image-rendering: pixelated;
+}
+
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 360px;
+  height: 225px;
+  transform-origin: 0 0;
+  font-family: 'VT323', monospace;
+  font-size: 8px;
+  line-height: 7px;
+  color: #1a1414;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+}
+
+.h {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  line-height: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.label {
+  text-transform: uppercase;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.panel {
+  border: 3px solid transparent;
+  border-image: var(--n-paper) 3 fill / 3px / 0 stretch;
+  color: #1a1414;
+}
+.panel.card {
+  border-image-source: var(--n-card);
+}
+.panel.dark {
+  border-image-source: var(--n-dark);
+  color: #f4ecd8;
+}
+
+.btn {
+  --up: var(--b-paper);
+  --down: var(--b-paper-d);
+  border: 2px solid transparent;
+  border-image: var(--up) 2 fill / 2px / 0 stretch;
+  box-shadow: 0 1px 0 #1a1414;
+  margin-bottom: 1px;
+  cursor: pointer;
+  color: #1a1414;
+  text-align: left;
+  padding: 0 1px;
+}
+.btn.amber {
+  --up: var(--b-amber);
+  --down: var(--b-amber-d);
+}
+.btn.crimson {
+  --up: var(--b-crimson);
+  --down: var(--b-crimson-d);
+  color: #f4ecd8;
+}
+.btn.teal {
+  --up: var(--b-teal);
+  --down: var(--b-teal-d);
+  color: #f4ecd8;
+}
+.btn.on {
+  border-image-source: var(--b-amber-d);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+.btn:hover:not(:disabled):not(.on) {
+  border-image-source: var(--b-amber);
+}
+.btn:active:not(:disabled) {
+  border-image-source: var(--down);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+.btn:disabled {
+  border-image-source: var(--b-off);
+  color: #2c3350;
+  cursor: not-allowed;
+}
+.btn:focus-visible,
+input:focus-visible {
+  outline: 1px solid #f2b33d;
+  outline-offset: 1px;
+}
+
+.scroll {
+  scrollbar-width: none;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.dither {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='2' height='2' shape-rendering='crispEdges'><rect width='1' height='1' fill='%230F1220'/><rect x='1' y='1' width='1' height='1' fill='%230F1220'/></svg>");
+  background-size: 2px 2px;
+}
+
+.pip {
+  width: 5px;
+  height: 5px;
+  outline: 1px solid #1a1414;
+  background: #1b2033;
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.blink {
+  animation: blink 0.8s steps(1) infinite;
+}
+
+::selection {
+  background: #f2b33d;
+  color: #1a1414;
+}

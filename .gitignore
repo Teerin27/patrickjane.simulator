@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+.vite/
+vite.config.*.timestamp-*
+
+# Secrets (API keys, MongoDB URI) - never commit
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Python (planned ML service)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.ipynb_checkpoints/
+# Model weights and datasets are large; keep them out of git
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+services/ml/data/
+services/ml/models/
+
+# Claude Code local settings (launch.json is shared)
+.claude/settings.local.json
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
