@@ -60,46 +60,56 @@ If a feature seems to need the LLM to make one of these decisions, put the logic
 
 ## Tech stack
 
-- Frontend: React, Tailwind CSS, Vite, TypeScript
-- Backend: Node.js, TypeScript, Express or Fastify
-- Database: MongoDB with Mongoose
-- Shared types: `zod` schemas in `packages/shared`
+- Frontend: React, Tailwind CSS v4, Vite, TypeScript
+- Backend: Node.js, TypeScript, Express 5 (REST)
+- Database: MongoDB with Prisma 6 (Prisma 7+ does not support MongoDB the same way; stay on 6). Prisma needs MongoDB as a replica set: `backend/docker-compose.yml` runs one locally
+- Validation: `zod` (planned: shared schemas in `packages/shared`)
 - LLM: hosted API for now, behind a provider interface so it can be swapped for a self-hosted model
 - ML (planned): separate Python FastAPI service, called from Node over HTTP
-- Monorepo: pnpm workspaces
+- Package manager: pnpm (frontend and backend are separate packages for now)
 
 ## Project structure
 
 ```
-whodunit/
-├── apps/
-│   ├── web/                  # React + Tailwind
-│   │   └── src/
-│   │       ├── pages/        # CaseSelect, Investigation, Interrogation, EvidenceBoard, Verdict
-│   │       ├── components/   # ChatPanel, EvidenceTray, ComposureMeter, QuestionCounter, SuspectCard
-│   │       ├── hooks/
-│   │       └── api/
-│   └── server/
-│       └── src/
-│           ├── engine/       # PURE game logic: no DB, no LLM, no I/O
-│           │   ├── composure.ts
-│           │   ├── contradiction.ts
-│           │   ├── confession.ts
-│           │   ├── questions.ts
-│           │   └── knowledge.ts
-│           ├── llm/
-│           │   ├── provider.ts
-│           │   ├── promptBuilder.ts
-│           │   └── guard.ts
-│           ├── routes/       # /cases, /sessions, /interrogate, /accuse
-│           ├── models/       # Mongoose schemas
-│           └── services/     # glue between engine, llm, db
-├── packages/
-│   └── shared/               # zod schemas + inferred types used by web and server
-├── services/
-│   └── ml/                   # planned Python service: intent/, retrieval/, finetune/
-└── cases/                    # case files as JSON, seeded into MongoDB
+patrickjane.simulator/
+├── frontend/                 # React + Tailwind (Vite)
+│   └── src/
+│       ├── components/       # Header, SuspectList, ChatPanel, EvidencePanel, QuestionCounter, AccuseModal, ...
+│       ├── hooks/            # useInterrogation (game state), useStageScale
+│       ├── data/dummyCase.ts # (DUMMY) sample data until the frontend calls the API
+│       ├── lib/              # pixel.ts (pixel-art renderer), theme.ts
+│       └── types.ts
+├── backend/                  # Node + Express REST API
+│   ├── prisma/
+│   │   ├── schema.prisma     # cases, sessions, transcripts
+│   │   └── seed.ts           # (DUMMY) seeds the sample case
+│   ├── docker-compose.yml    # local MongoDB replica set
+│   └── src/
+│       ├── index.ts          # starts the server
+│       ├── app.ts            # Express app, middleware, routers
+│       ├── config/env.ts     # zod-validated environment variables
+│       ├── db/prisma.ts      # Prisma client
+│       ├── engine/           # PURE game logic: no DB, no LLM, no I/O (+ *.test.ts)
+│       ├── llm/provider.ts   # LLM provider interface (dummy for now); promptBuilder.ts, guard.ts to come
+│       ├── routes/           # /api/cases, /api/sessions (+ /:id/interrogate, /:id/accuse)
+│       ├── services/         # glue between engine, llm, db; publicView.ts whitelists response fields
+│       └── http/errors.ts    # HttpError + error handler
+├── packages/shared/          # planned: zod schemas + inferred types used by web and server
+├── services/ml/              # planned Python service: intent/, retrieval/, finetune/
+└── cases/                    # planned: case files as JSON, seeded into MongoDB
 ```
+
+## REST API
+
+| Method | Path | Body | Notes |
+| --- | --- | --- | --- |
+| GET | `/api/health` | | |
+| GET | `/api/cases` | | case list |
+| GET | `/api/cases/:id` | | public case info, never `truth` |
+| POST | `/api/sessions` | `{ caseId }` | new play session |
+| GET | `/api/sessions/:id` | | session + per-suspect state |
+| POST | `/api/sessions/:id/interrogate` | `{ suspectId, message, evidenceId? }` | costs 1 question; 403 `LAWYERED_UP` at 0 |
+| POST | `/api/sessions/:id/accuse` | `{ suspectId }` | SOLVED or COLD + stars |
 
 ## MongoDB collections
 

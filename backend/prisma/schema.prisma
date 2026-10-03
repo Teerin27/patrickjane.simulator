@@ -1,0 +1,109 @@
+// Prisma schema for MongoDB.
+// Composite `type`s are embedded documents (not separate collections).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- cases: read-only case files, server only ----------
+
+model Case {
+  id       String         @id @default(auto()) @map("_id") @db.ObjectId
+  slug     String         @unique
+  title    String
+  number   String
+  suspects CaseSuspect[]
+  evidence CaseEvidence[]
+  /// Ground truth. NEVER send to the client.
+  truth    CaseTruth
+  sessions Session[]
+
+  @@map("cases")
+}
+
+type CaseSuspect {
+  id      String
+  short   String
+  surname String
+  role    String
+  alibi   String
+  opener  String
+  closer  String
+}
+
+type CaseEvidence {
+  id     String
+  tag    String
+  name   String
+  sprite String
+  note   String
+}
+
+type CaseTruth {
+  culpritId      String
+  verdictCorrect String
+  verdictWrong   String
+  /// (DUMMY) suspectId -> evidenceId -> reaction. Will be replaced by the evidence graph.
+  reactions      Json
+}
+
+// ---------- sessions: player progress ----------
+
+enum SessionStatus {
+  ACTIVE
+  SOLVED
+  COLD
+}
+
+model Session {
+  id                 String         @id @default(auto()) @map("_id") @db.ObjectId
+  caseId             String         @db.ObjectId
+  case               Case           @relation(fields: [caseId], references: [id])
+  status             SessionStatus  @default(ACTIVE)
+  suspects           SuspectState[]
+  discoveredEvidence String[]
+  accusedId          String?
+  /// Bumped on every write; used for optimistic concurrency.
+  version            Int            @default(0)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  transcripts        Transcript[]
+
+  @@index([caseId])
+  @@map("sessions")
+}
+
+type SuspectState {
+  suspectId          String
+  composure          Int
+  questionsRemaining Int
+  mood               String
+  commitments        String[]
+  confrontedEvidence String[]
+  revealedSecrets    String[]
+}
+
+// ---------- transcripts: append-only turn log (future fine-tuning data) ----------
+
+model Transcript {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId     String   @db.ObjectId
+  session       Session  @relation(fields: [sessionId], references: [id])
+  suspectId     String
+  turn          Int
+  intent        String
+  playerMessage String
+  evidenceId    String?
+  reply         String
+  replyKind     String
+  stateSnapshot Json
+  createdAt     DateTime @default(now())
+
+  @@index([sessionId, suspectId])
+  @@map("transcripts")
+}
