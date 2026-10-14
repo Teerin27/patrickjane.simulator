@@ -1,4 +1,4 @@
-import { MAX_Q } from '../data/dummyCase'
+import { MAX_Q } from '../lib/rules'
 
 export default function QuestionCounter({ left }: { left: number }) {
   const low = left <= 3

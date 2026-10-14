@@ -1,0 +1,532 @@
+{
+  "slug": "case-0002-the-silent-aria",
+  "title": "The Silent Aria",
+  "number": "Case 0002",
+  "briefing": "On opening night at the opulent Gilded Stag Opera House, tenor Julian Vane collapsed during his final high C and died from a needle prick in his neck. His body was discovered by the stage manager just as the curtain fell, ending the performance in chaos.",
+  "culpritId": "elara",
+  "verdictCorrect": "Elara Voss is the killer. The blood on the tuxedo collar matches her fingerprints from the sewing incident, and the needle residue was found in her dressing room trash.",
+  "verdictWrong": "You have accused an innocent person. The evidence does not support this claim against {suspect_name}. Try again.",
+  "suspects": [
+    {
+      "id": "elara",
+      "look": {
+        "skin": "fair",
+        "hairStyle": "bun",
+        "hairColor": "black",
+        "facialHair": "none",
+        "glasses": true,
+        "hat": false,
+        "outfit": "dress",
+        "outfitColor": "crimson"
+      },
+      "short": "VOSS",
+      "surname": "Voss",
+      "role": "Lead Soprano",
+      "alibi": "I was in my dressing room applying makeup until the scream broke out.",
+      "opener": "Julian? He was just another man with a big voice. I hope his death brings me the lead role.",
+      "closer": "I have nothing more to say to you. The police will find no fault in my performance.",
+      "fullName": "Elara Voss",
+      "age": 28,
+      "address": "42 Velvet Lane, Apt 3B",
+      "tie": "Julian stole her original role; she has been publicly vowing to replace him for months.",
+      "whereabouts": [
+        {
+          "time": "19:45 PM",
+          "place": "Dressing Room B"
+        },
+        {
+          "time": "20:30 PM",
+          "place": "Backstage Corridor"
+        },
+        {
+          "time": "21:00 PM",
+          "place": "Lobby Bar"
+        }
+      ]
+    },
+    {
+      "id": "silas",
+      "look": {
+        "skin": "brown",
+        "hairStyle": "slick",
+        "hairColor": "gray",
+        "facialHair": "mustache",
+        "glasses": true,
+        "hat": false,
+        "outfit": "suit",
+        "outfitColor": "charcoal"
+      },
+      "short": "GRANT",
+      "surname": "Grant",
+      "role": "Stage Manager",
+      "alibi": "I was on the catwalk above the stage, checking the lighting cues for the finale.",
+      "opener": "The show must go on, even if the star is dead. But someone cut his mic line before he fell.",
+      "closer": "I am busy with the investigation. Leave me to my work.",
+      "fullName": "Silas Grant",
+      "age": 52,
+      "address": "89 Ironworks Road",
+      "tie": "Julian was blackmailing Silas over a past accounting error in the theater's budget.",
+      "whereabouts": [
+        {
+          "time": "19:50 PM",
+          "place": "Lighting Booth"
+        },
+        {
+          "time": "20:45 PM",
+          "place": "Catwalk Above Stage"
+        },
+        {
+          "time": "21:00 PM",
+          "place": "Backstage Exit"
+        }
+      ]
+    },
+    {
+      "id": "rosa",
+      "look": {
+        "skin": "tan",
+        "hairStyle": "bob",
+        "hairColor": "auburn",
+        "facialHair": "none",
+        "glasses": false,
+        "hat": true,
+        "outfit": "apron",
+        "outfitColor": "cream"
+      },
+      "short": "KANE",
+      "surname": "Kane",
+      "role": "Costume Mistress",
+      "alibi": "I was in the laundry room, pressing Julian's tuxedo for his post-show celebration dinner.",
+      "opener": "Julian was sweet to me. He wouldn't hurt a fly. Why are you looking at me like I'm guilty?",
+      "closer": "My hands are clean. I only touch clothes, not people.",
+      "fullName": "Rosa Kane",
+      "age": 34,
+      "address": "12 Threadbare Alley",
+      "tie": "Julian promised to marry her but was secretly engaged to the theater owner's daughter.",
+      "whereabouts": [
+        {
+          "time": "19:30 PM",
+          "place": "Costume Storage"
+        },
+        {
+          "time": "20:15 PM",
+          "place": "Laundry Room"
+        },
+        {
+          "time": "20:50 PM",
+          "place": "Dressing Room Hallway"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "needle_case",
+      "tag": "EXH.A",
+      "name": "Needle Case",
+      "sprite": "glass",
+      "note": "A small glass vial containing potassium chloride residue was found in the locked drawer of Elara Voss's dressing room. The vial matched the syringe tip recovered from Julian Vane's tuxedo collar."
+    },
+    {
+      "id": "stained_collar",
+      "tag": "EXH.B",
+      "name": "Stained Collar",
+      "sprite": "cloth",
+      "note": "The inner lining of Julian Vane’s tuxedo collar contained a hidden hypodermic needle. A distinct blood spatter pattern on the fabric matched Rosa Kane's laundry log entry for that specific garment."
+    },
+    {
+      "id": "blackmail_note",
+      "tag": "EXH.C",
+      "name": "Blackmail Note",
+      "sprite": "letter",
+      "note": "A handwritten note threatening to expose Elara Voss’s theft of her own scores was found crumpled near the stage manager's office, where Silas Grant was hiding. The ink smudge on the back matched a pen"
+    },
+    {
+      "id": "laundry_ticket",
+      "tag": "EXH.D",
+      "name": "Laundry Ticket",
+      "sprite": "ticket",
+      "note": "Rosa Kane’s signed receipt for Julian Vane’s tuxedo showed it was returned to the costume workshop after hours. The timestamp coincided with Elara Voss's last known visit to the sewing room."
+    },
+    {
+      "id": "love_letter",
+      "tag": "EXH.E",
+      "name": "Love Letter",
+      "sprite": "letter",
+      "note": "A sealed envelope addressed to Rosa Kane from a married producer was discovered in her locker. The wax seal was broken, revealing intimate correspondence that contradicted her claim of innocence."
+    },
+    {
+      "id": "silk_thread",
+      "tag": "EXH.F",
+      "name": "Silk Thread",
+      "sprite": "cloth",
+      "note": "A strand of crimson silk thread from Elara Voss’s personal sewing kit was found caught in the mechanism of the tuxedo collar's hidden compartment. No other suspect had access to that specific spool."
+    }
+  ],
+  "truth": {
+    "story": "Elara Voss sewed a hypodermic needle containing potassium chloride into the inner lining of Julian Vane's tuxedo collar in the Costume Workshop before the performance. During the final aria, as Julian raised his arms for the high C, the needle pierced his neck, causing immediate cardiac arrest disguised as a heart attack. Elara then retreated to her dressing room to apply makeup, timing her alibi with the chaos of the scream. Silas Grant was on the catwalk hiding from blackmail threats, while Rosa Kane pressed the tuxedo in the laundry room, discovering the blood spot too late.",
+    "timeline": [
+      {
+        "time": "7:30 PM",
+        "event": "Elara Voss sews a hypodermic needle into Julian's tuxedo collar lining in the Costume Workshop."
+      },
+      {
+        "time": "8:00 PM",
+        "event": "Julian puts on the tuxedo; the needle prick occurs as he raises his arms during the final high C."
+      },
+      {
+        "time": "8:15 PM",
+        "event": "Julian collapses stage left; Elara screams and rushes to his side, then retreats to her dressing room."
+      },
+      {
+        "time": "8:20 PM",
+        "event": "Rosa discovers a small blood spot on the tuxedo collar while pressing it in the laundry room."
+      },
+      {
+        "time": "8:30 PM",
+        "event": "Silas checks lighting cues on the catwalk, hearing the commotion but seeing nothing directly."
+      }
+    ],
+    "motive": "Julian stole Elara's lead role two years ago and publicly humiliated her, causing her career to stall. She wanted his fame and his spot in the spotlight permanently.",
+    "method": "Elara sewed a hypodermic needle containing potassium chloride into the inner lining of Julian's tuxedo collar. When he raised his arms for the final aria, the needle pierced his neck, causing immediate cardiac arrest.",
+    "suspects": {
+      "elara": {
+        "persona": {
+          "voice": "sharp, clipped, aristocratic",
+          "temperament": "arrogant and cold",
+          "background": "Elara is a diva known for her icy demeanor and jealous rivalry with Julian. She arrived at the opera house two hours early for sound checks.",
+          "fallbackLines": [
+            "My voice is my weapon, not my anger.",
+            "Do not insult me with false sympathy.",
+            "The music does not lie, only people do."
+          ]
+        },
+        "trueWhereabouts": [
+          {
+            "time": "7:30 PM",
+            "place": "Costume Workshop"
+          },
+          {
+            "time": "8:00 PM",
+            "place": "Stage Left Wings"
+          },
+          {
+            "time": "8:15 PM",
+            "place": "Dressing Room B"
+          }
+        ],
+        "claims": [
+          {
+            "id": "alibi",
+            "statement": "I was in my dressing room applying makeup until the scream broke out.",
+            "triggers": [
+              "where",
+              "makeup",
+              "room",
+              "time"
+            ],
+            "isLie": true,
+            "truth": "I was actually in the Costume Workshop at 7:30 PM, sewing a needle into Julian's collar. I went to the wings to watch him die, then ran to my dressing room.",
+            "exposedNote": "Eyewitnesses saw Elara in the Costume Workshop hours before the murder, not her dressing room.",
+            "leakMarkers": [
+              "costume workshop",
+              "sewing",
+              "needle",
+              "collar"
+            ]
+          },
+          {
+            "id": "motive",
+            "statement": "I hated Julian for stealing my role, but I would never kill him. This was a tragedy.",
+            "triggers": [
+              "why",
+              "hate",
+              "role",
+              "kill"
+            ],
+            "isLie": false,
+            "leakMarkers": []
+          },
+          {
+            "id": "witness",
+            "statement": "Silas Grant was on the catwalk and could have seen me moving around.",
+            "triggers": [
+              "silas",
+              "catwalk",
+              "saw",
+              "stage manager"
+            ],
+            "isLie": false,
+            "leakMarkers": []
+          }
+        ],
+        "secrets": [
+          {
+            "id": "confession",
+            "kind": "murder",
+            "description": "I sewed a hypodermic needle into Julian's tuxedo collar in the Costume Workshop. When he raised his arms for the high C, it pierced his neck. I watched him fall from the wings.",
+            "leakMarkers": [
+              "hypodermic needle",
+              "tuxedo collar",
+              "costume workshop",
+              "high c"
+            ],
+            "maxComposure": 30
+          }
+        ]
+      },
+      "silas": {
+        "persona": {
+          "voice": "gruff, weary, practical",
+          "temperament": "stressed and defensive",
+          "background": "Silas has managed the Gilded Stag for twenty years and knows every shadow in the building. He was seen arguing with Julian in the wings just before the performance.",
+          "fallbackLines": [
+            "I hold the keys to this place, not you.",
+            "Check the logs. Everything is recorded.",
+            "Dead men tell no tales, but I do."
+          ]
+        },
+        "trueWhereabouts": [
+          {
+            "time": "7:30 PM",
+            "place": "Catwalk Above Stage"
+          },
+          {
+            "time": "8:15 PM",
+            "place": "Catwalk Above Stage"
+          }
+        ],
+        "claims": [
+          {
+            "id": "alibi",
+            "statement": "I was on the catwalk above the stage, checking the lighting cues for the finale.",
+            "triggers": [
+              "where",
+              "lights",
+              "catwalk",
+              "cues"
+            ],
+            "isLie": false,
+            "leakMarkers": []
+          },
+          {
+            "id": "blackmail",
+            "statement": "Julian was blackmailing me over an accounting error, but I didn't kill him. I just wanted the money back.",
+            "triggers": [
+              "blackmail",
+              "money",
+              "accounting",
+              "error"
+            ],
+            "isLie": false,
+            "leakMarkers": []
+          },
+          {
+            "id": "saw_something",
+            "statement": "I saw a shadow move near the wings right before Julian collapsed.",
+            "triggers": [
+              "shadow",
+              "wings",
+              "saw",
+              "movement"
+            ],
+            "isLie": true,
+            "truth": "There was no shadow. I was too busy hiding from Silas's thugs who were threatening to expose my embezzlement if I didn't pay up.",
+            "exposedNote": "Security logs show the wings were empty of unauthorized people at that time.",
+            "leakMarkers": [
+              "shadow",
+              "wings",
+              "empty"
+            ]
+          }
+        ],
+        "secrets": [
+          {
+            "id": "embezzlement",
+            "kind": "personal",
+            "description": "I embezzled $50,000 from the theater budget. Julian found out and promised to keep quiet for a monthly fee.",
+            "leakMarkers": [
+              "embezzled",
+              "$50,000",
+              "theater budget",
+              "monthly fee"
+            ],
+            "maxComposure": 65
+          }
+        ]
+      },
+      "rosa": {
+        "persona": {
+          "voice": "soft, trembling, hesitant",
+          "temperament": "nervous and submissive",
+          "background": "Rosa worked quietly behind the scenes for years, harboring a secret love for Julian. She was found weeping near his dressing room door after his collapse.",
+          "fallbackLines": [
+            "I don't understand why this is happening.",
+            "Please, let me go back to work.",
+            "He loved the stage more than anything."
+          ]
+        },
+        "trueWhereabouts": [
+          {
+            "time": "7:30 PM",
+            "place": "Laundry Room"
+          },
+          {
+            "time": "8:20 PM",
+            "place": "Laundry Room"
+          }
+        ],
+        "claims": [
+          {
+            "id": "alibi",
+            "statement": "I was in the laundry room, pressing Julian's tuxedo for his post-show celebration dinner.",
+            "triggers": [
+              "where",
+              "laundry",
+              "tuxedo",
+              "pressing"
+            ],
+            "isLie": false,
+            "leakMarkers": []
+          },
+          {
+            "id": "betrayal",
+            "statement": "Julian promised to marry me but was secretly engaged to the owner's daughter. I was heartbroken, not homicidal.",
+            "triggers": [
+              "marriage",
+              "engagement",
+              "daughter",
+              "promised"
+            ],
+            "isLie": false,
+            "leakMarkers": []
+          },
+          {
+            "id": "blood",
+            "statement": "The tuxedo was perfectly clean when I pressed it.",
+            "triggers": [
+              "clean",
+              "blood",
+              "spot",
+              "tuxedo"
+            ],
+            "isLie": true,
+            "truth": "I saw a small blood spot on the collar after Julian died. I wiped it off with alcohol to hide that he had been injured, fearing I'd be blamed.",
+            "exposedNote": "Forensics found trace blood residues in the laundry sink matching Julian's type.",
+            "leakMarkers": [
+              "blood spot",
+              "collar",
+              "wiped off",
+              "alcohol"
+            ]
+          }
+        ],
+        "secrets": [
+          {
+            "id": "affair",
+            "kind": "personal",
+            "description": "I am secretly married to the theater owner's son. I lied about my engagement status to Julian.",
+            "leakMarkers": [
+              "secretly married",
+              "theater owner's son",
+              "lied",
+              "engagement"
+            ],
+            "maxComposure": 70
+          }
+        ]
+      }
+    },
+    "edges": [
+      {
+        "kind": "contradicts",
+        "evidenceId": "needle_case",
+        "suspectId": "elara",
+        "claimId": "alibi",
+        "weight": 35
+      },
+      {
+        "kind": "implicates",
+        "evidenceId": "needle_case",
+        "suspectId": "elara",
+        "weight": 10
+      },
+      {
+        "kind": "reveals",
+        "evidenceId": "needle_case",
+        "suspectId": "elara",
+        "secretId": "confession"
+      },
+      {
+        "kind": "contradicts",
+        "evidenceId": "blackmail_note",
+        "suspectId": "silas",
+        "claimId": "saw_something",
+        "weight": 30
+      },
+      {
+        "kind": "implicates",
+        "evidenceId": "blackmail_note",
+        "suspectId": "silas",
+        "weight": 10
+      },
+      {
+        "kind": "reveals",
+        "evidenceId": "blackmail_note",
+        "suspectId": "silas",
+        "secretId": "embezzlement"
+      },
+      {
+        "kind": "contradicts",
+        "evidenceId": "laundry_ticket",
+        "suspectId": "rosa",
+        "claimId": "blood",
+        "weight": 30
+      },
+      {
+        "kind": "implicates",
+        "evidenceId": "laundry_ticket",
+        "suspectId": "rosa",
+        "weight": 5
+      },
+      {
+        "kind": "reveals",
+        "evidenceId": "love_letter",
+        "suspectId": "rosa",
+        "secretId": "affair"
+      },
+      {
+        "kind": "contradicts",
+        "evidenceId": "silk_thread",
+        "suspectId": "elara",
+        "claimId": "alibi",
+        "weight": 40
+      },
+      {
+        "kind": "implicates",
+        "evidenceId": "silk_thread",
+        "suspectId": "elara",
+        "weight": 15
+      },
+      {
+        "kind": "reveals",
+        "evidenceId": "silk_thread",
+        "suspectId": "elara",
+        "secretId": "confession"
+      },
+      {
+        "kind": "contradicts",
+        "evidenceId": "stained_collar",
+        "suspectId": "rosa",
+        "claimId": "blood",
+        "weight": 30
+      },
+      {
+        "kind": "implicates",
+        "evidenceId": "stained_collar",
+        "suspectId": "elara",
+        "weight": 12
+      }
+    ]
+  }
+}

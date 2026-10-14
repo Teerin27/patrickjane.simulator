@@ -1,0 +1,257 @@
+{
+  "slug": "case-0417-blue-lantern",
+  "title": "patricjane.sim",
+  "number": "Case 0001",
+  "briefing": "The Blue Lantern jazz club, 1947. Club owner Victor Hale was found shot in his locked office at 12:10 AM. One bullet, no gun in the room. Three people were close enough to have done it.",
+  "culpritId": "doyle",
+  "verdictCorrect": "Doyle slipped out on the 11:52 and used the spare key from behind his bar. The cuffs go on.",
+  "verdictWrong": "Your suspect walks. The real killer pours the next round. Check the ticket stub and the spare keys.",
+  "suspects": [
+    {
+      "id": "lorraine",
+      "look": {"skin": "light", "hairStyle": "long", "hairColor": "brown", "facialHair": "none", "glasses": false, "hat": false, "outfit": "dress", "outfitColor": "crimson"},
+      "short": "L. VOSS",
+      "surname": "Voss",
+      "role": "Singer",
+      "alibi": "Alone in her dressing room after the 11:40 set.",
+      "opener": "Make it quick, detective. I have a second set to think about.",
+      "closer": "That is enough. Talk to my lawyer.",
+      "fullName": "Lorraine Voss",
+      "age": 31,
+      "address": "214 Alder St, Apt 4B",
+      "tie": "Headline singer. Victor signed her checks.",
+      "whereabouts": [
+        { "time": "10:00 PM", "place": "Main stage, first set" },
+        { "time": "11:40 PM", "place": "Dressing room, alone" },
+        { "time": "12:00 AM", "place": "Dressing room, door shut" }
+      ]
+    },
+    {
+      "id": "pike",
+      "look": {"skin": "light", "hairStyle": "slick", "hairColor": "gray", "facialHair": "mustache", "glasses": true, "hat": false, "outfit": "suit", "outfitColor": "navy"},
+      "short": "DR. PIKE",
+      "surname": "Pike",
+      "role": "Doctor",
+      "alibi": "Cards upstairs with the club accountant.",
+      "opener": "I told the officers everything. A doctor does not forget a card game.",
+      "closer": "I have nothing more to say to you.",
+      "fullName": "Dr. Edmund Pike",
+      "age": 54,
+      "address": "9 Larch Court, Suite 2",
+      "tie": "Victor's doctor, and his tenant.",
+      "whereabouts": [
+        { "time": "10:30 PM", "place": "Card room, upstairs" },
+        { "time": "11:45 PM", "place": "Card room, with H. Finch" },
+        { "time": "12:00 AM", "place": "Card room, still playing" }
+      ]
+    },
+    {
+      "id": "doyle",
+      "look": {"skin": "tan", "hairStyle": "short", "hairColor": "black", "facialHair": "stubble", "glasses": false, "hat": false, "outfit": "vest", "outfitColor": "brown"},
+      "short": "M. DOYLE",
+      "surname": "Doyle",
+      "role": "Barman",
+      "alibi": "Behind the bar all night. Never left it.",
+      "opener": "I pour drinks. I see everybody and I say nothing. That is the job.",
+      "closer": "Bar is closed, detective. Get out.",
+      "fullName": "Michael Doyle",
+      "age": 42,
+      "address": "3 Dock Row, Rear Flat",
+      "tie": "Head barman. Eight years on the payroll.",
+      "whereabouts": [
+        { "time": "9:00 PM", "place": "Opens the bar" },
+        { "time": "11:30 PM", "place": "Behind the bar, busy" },
+        { "time": "12:00 AM", "place": "Behind the bar, serving" }
+      ]
+    }
+  ],
+  "evidence": [
+    { "id": "key", "tag": "EXH.A", "name": "Brass key", "sprite": "key", "note": "Found under the desk. Stamped \"BL-2\", the office door." },
+    { "id": "letter", "tag": "EXH.B", "name": "Burned letter", "sprite": "letter", "note": "Charred scrap: \"...pay by Friday or I tell Pike.\"" },
+    { "id": "ticket", "tag": "EXH.C", "name": "Rail ticket", "sprite": "ticket", "note": "Union Station stub, stamped 11:52 PM, the night of the murder." },
+    { "id": "glass", "tag": "EXH.D", "name": "Lipstick glass", "sprite": "glass", "note": "Rye glass on the desk. Dark red on the rim." }
+  ],
+  "truth": {
+    "story": "Victor Hale held half the club in his pocket. He owned Doyle's gambling markers and meant to sell them to a loan shark. At 11:45 PM Doyle took the spare office key from the hook behind his bar, shot Hale, dropped the key in his hurry, and caught the 11:52 at Union Station to ditch the gun in a locker. He was back behind the bar by 12:05. Voss had been in the office earlier, begging Hale to release her from her contract. Pike was being blackmailed by Hale but was upstairs at cards the whole time.",
+    "timeline": [
+      { "time": "9:00 PM", "event": "Doyle opens the bar." },
+      { "time": "10:00 PM", "event": "Voss shares a rye with Hale in his office, argues about her contract, leaves him alive." },
+      { "time": "10:30 PM", "event": "Pike sits down to cards upstairs with Harold Finch." },
+      { "time": "11:40 PM", "event": "Voss finishes her set and shuts herself in her dressing room." },
+      { "time": "11:45 PM", "event": "Doyle takes the spare key from behind the bar and shoots Hale in his office." },
+      { "time": "11:52 PM", "event": "Doyle is at Union Station, ditching the gun in a locker." },
+      { "time": "12:05 AM", "event": "Doyle is back behind the bar." },
+      { "time": "12:10 AM", "event": "Hale's body is found." }
+    ],
+    "motive": "Hale held Doyle's gambling markers and was about to sell them to a loan shark.",
+    "method": "A .38 revolver, and the spare office key (BL-2) from the hook behind the bar.",
+    "suspects": {
+      "lorraine": {
+        "persona": {
+          "voice": "Smoky and sardonic. Short sentences, dry jokes. Calls the detective 'detective' when irritated and 'darling' when she is being cutting. Never begs.",
+          "temperament": "Proud and guarded. Hates being pitied.",
+          "background": "Headline singer at the Blue Lantern for three years. Victor Hale signed her checks and held her contract.",
+          "fallbackLines": [
+            "I have said my piece, detective. Ask something with a little more teeth.",
+            "You are boring me, darling. Try again.",
+            "Is there a question in there somewhere?"
+          ]
+        },
+        "trueWhereabouts": [
+          { "time": "10:00 PM", "place": "Victor's office, sharing a rye" },
+          { "time": "11:40 PM", "place": "Dressing room, alone" },
+          { "time": "12:00 AM", "place": "Dressing room, door shut" }
+        ],
+        "claims": [
+          {
+            "id": "office",
+            "statement": "I have not set foot in Victor's office tonight. Why would I climb those stairs for that man?",
+            "triggers": ["office", "upstairs", "stairs", "his room"],
+            "isLie": true,
+            "truth": "I had a drink with Victor in his office at ten. We argued about my contract, and I left him alive and sulking.",
+            "exposedNote": "Voss lied: she was in the office.",
+            "leakMarkers": ["shared a rye", "drink with victor", "drink with him", "left him alive"]
+          },
+          {
+            "id": "alibi",
+            "statement": "After my set I locked myself in my dressing room, alone, until the commotion started.",
+            "triggers": ["alibi", "midnight", "where were you", "dressing room", "after your set", "11:40"],
+            "isLie": false,
+            "leakMarkers": []
+          },
+          {
+            "id": "victor",
+            "statement": "Victor signed my checks and never let me forget it.",
+            "triggers": ["victor", "hale", "know him", "get along", "boss"],
+            "isLie": false,
+            "leakMarkers": []
+          }
+        ],
+        "secrets": [
+          {
+            "id": "chicago",
+            "kind": "personal",
+            "description": "I secretly signed with a rival club in Chicago and begged Victor to tear up my contract. He refused and threatened to ruin me.",
+            "leakMarkers": ["chicago", "rival club", "signed with"],
+            "maxComposure": 70
+          }
+        ]
+      },
+      "pike": {
+        "persona": {
+          "voice": "Clipped, precise and faintly condescending. Medical euphemisms. Never raises his voice.",
+          "temperament": "Controlled. When he cracks, he cracks quietly.",
+          "background": "A respected physician, Victor's doctor and his tenant. His reputation is the only thing he owns.",
+          "fallbackLines": [
+            "I told the officers everything. I see no reason to repeat myself.",
+            "A gentleman does not discuss such matters in this manner.",
+            "I think we have covered that, detective."
+          ]
+        },
+        "trueWhereabouts": [
+          { "time": "10:30 PM", "place": "Card room, upstairs" },
+          { "time": "11:45 PM", "place": "Card room, with H. Finch" },
+          { "time": "12:00 AM", "place": "Card room, still playing" }
+        ],
+        "claims": [
+          {
+            "id": "alibi",
+            "statement": "I was upstairs at cards with Harold Finch, the club accountant, all night.",
+            "triggers": ["alibi", "vouch", "where were you", "midnight", "cards", "finch"],
+            "isLie": false,
+            "leakMarkers": []
+          },
+          {
+            "id": "trouble",
+            "statement": "Victor was a patient and a landlord. Our only disagreement was over the rent, and gentlemen settle such things quietly.",
+            "triggers": ["victor", "trouble", "argue", "money", "owe", "rent", "fight", "enemies", "hale"],
+            "isLie": true,
+            "truth": "Victor was blackmailing me over a patient who died under my care. He had been bleeding me dry for months.",
+            "exposedNote": "Pike was being blackmailed by Hale.",
+            "leakMarkers": ["blackmail", "bleeding me", "patient who died", "died under"]
+          }
+        ],
+        "secrets": [
+          {
+            "id": "blackmail",
+            "kind": "personal",
+            "description": "I paid Victor for months over a patient who died under my care, and I wished him dead. But I did not kill him.",
+            "leakMarkers": ["blackmail", "bleeding me dry", "wished him dead"],
+            "maxComposure": 70
+          }
+        ]
+      },
+      "doyle": {
+        "persona": {
+          "voice": "Low and unhurried, bartender patter. Answers a question with a question. Always seems to be wiping a glass.",
+          "temperament": "Steady until cornered, then bitter.",
+          "background": "Head barman, eight years on the payroll. Sees everything and says little. Owes more than he earns.",
+          "fallbackLines": [
+            "I pour drinks. I see everybody and I say nothing. That is the job.",
+            "You want a drink, detective, or you want to keep asking?",
+            "Ask somebody who was not working."
+          ]
+        },
+        "trueWhereabouts": [
+          { "time": "9:00 PM", "place": "Opens the bar" },
+          { "time": "11:45 PM", "place": "Victor's office, with the spare key" },
+          { "time": "11:52 PM", "place": "Union Station, left-luggage lockers" },
+          { "time": "12:05 AM", "place": "Back behind the bar" }
+        ],
+        "claims": [
+          {
+            "id": "alibi",
+            "statement": "I was behind the bar all night. I never left it, not even for a smoke.",
+            "triggers": ["alibi", "leave the bar", "left the bar", "where were you", "midnight", "behind the bar", "step out", "all night"],
+            "isLie": true,
+            "truth": "I left the bar around 11:45 and was at Union Station by 11:52. I was gone twenty minutes and back before anyone noticed.",
+            "exposedNote": "Doyle left the bar at 11:52. Alibi broken.",
+            "leakMarkers": ["union station", "11:52", "platform", "locker", "late train"]
+          },
+          {
+            "id": "keys",
+            "statement": "Victor was the only one with a key to that office. He was funny about it.",
+            "triggers": ["key", "keys", "lock", "locked", "door"],
+            "isLie": true,
+            "truth": "A spare set of office keys hangs on a hook behind my bar. I can reach it any time.",
+            "exposedNote": "Spare office keys hang behind Doyle's bar.",
+            "leakMarkers": ["spare", "hook behind"]
+          },
+          {
+            "id": "victor",
+            "statement": "Victor was counting money and humming tonight. Happy. That is what scared me.",
+            "triggers": ["victor", "mood", "hale", "boss"],
+            "isLie": false,
+            "leakMarkers": []
+          }
+        ],
+        "secrets": [
+          {
+            "id": "murder",
+            "kind": "murder",
+            "description": "I shot Victor in his office with the spare key. He held my gambling markers and was about to sell them to a loan shark. Afterwards I took the gun to Union Station and ditched it in a locker.",
+            "leakMarkers": ["i shot", "i killed", "shot him", "pulled the trigger", "loan shark", "markers"],
+            "maxComposure": 30
+          }
+        ]
+      }
+    },
+    "edges": [
+      { "kind": "contradicts", "evidenceId": "glass", "suspectId": "lorraine", "claimId": "office", "weight": 30 },
+      { "kind": "implicates", "evidenceId": "glass", "suspectId": "lorraine", "weight": 5 },
+      { "kind": "reveals", "evidenceId": "glass", "suspectId": "lorraine", "secretId": "chicago" },
+
+      { "kind": "contradicts", "evidenceId": "letter", "suspectId": "pike", "claimId": "trouble", "weight": 35 },
+      { "kind": "implicates", "evidenceId": "letter", "suspectId": "pike", "weight": 5 },
+      { "kind": "reveals", "evidenceId": "letter", "suspectId": "pike", "secretId": "blackmail" },
+
+      { "kind": "contradicts", "evidenceId": "ticket", "suspectId": "doyle", "claimId": "alibi", "weight": 30 },
+      { "kind": "implicates", "evidenceId": "ticket", "suspectId": "doyle", "weight": 10 },
+      { "kind": "reveals", "evidenceId": "ticket", "suspectId": "doyle", "secretId": "murder" },
+
+      { "kind": "contradicts", "evidenceId": "key", "suspectId": "doyle", "claimId": "keys", "weight": 25 },
+      { "kind": "implicates", "evidenceId": "key", "suspectId": "doyle", "weight": 10 },
+      { "kind": "reveals", "evidenceId": "key", "suspectId": "doyle", "secretId": "murder" }
+    ]
+  }
+}

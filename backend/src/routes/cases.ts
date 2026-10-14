@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { parseId } from '../http/errors.js'
 import { getCase, listCases } from '../services/caseService.js'
 
 export const casesRouter = Router()
@@ -10,5 +11,5 @@ casesRouter.get('/', async (_req, res) => {
 
 // GET /api/cases/:id
 casesRouter.get('/:id', async (req, res) => {
-  res.json(await getCase(req.params.id))
+  res.json(await getCase(parseId(req.params.id, 'Case')))
 })

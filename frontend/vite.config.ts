@@ -13,5 +13,10 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    // The browser talks to /api on its own origin and Vite forwards it to the Express backend,
+    // so no CORS is involved in dev. Port 3001 is the backend's default (PORT in backend/.env).
+    proxy: {
+      '/api': 'http://localhost:3001',
+    },
   },
 })

@@ -7,7 +7,9 @@ export default function Sprite({ name }: { name: keyof typeof SPRITES | string }
     const ctx = ref.current?.getContext('2d')
     if (!ctx) return
     ctx.clearRect(0, 0, 16, 16)
-    SPRITES[name].forEach((row, y) =>
+    // an unknown sprite name draws the paper sprite rather than crashing
+    const rows = SPRITES[name] ?? SPRITES.letter
+    rows.forEach((row, y) =>
       [...row].forEach((ch, x) => {
         const c = SPRITE_PAL[ch]
         if (!c) return

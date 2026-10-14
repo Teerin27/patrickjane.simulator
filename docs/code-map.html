@@ -1,0 +1,702 @@
+<title>PatricJane Code Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a detective's case file. Sticky index on the left, one "exhibit" per source file on the right. */
+:root {
+  --bg: #EFE4C8;        /* paper */
+  --surface: #F8F1DF;
+  --line: #C4A97A;
+  --ink: #1A1414;
+  --muted: #6B5A44;
+  --amber: #A9650F;
+  --amber-bg: #F6D58C;
+  --crimson: #8E2230;
+  --crimson-bg: #F1C7C3;
+  --teal: #245A5C;
+  --teal-bg: #C3E2DE;
+  --navy: #1B2033;
+  --code-bg: #E6D5AE;
+  --display: "Chakra Petch", "IBM Plex Sans Thai", system-ui, sans-serif;
+  --body: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1220; --surface: #1B2033; --line: #2C3350; --ink: #F4ECD8; --muted: #B3A58A;
+    --amber: #F2B33D; --amber-bg: #3A2E14; --crimson: #F07A82; --crimson-bg: #3A1820;
+    --teal: #7CCBC6; --teal-bg: #15302F; --navy: #F4ECD8; --code-bg: #262C45;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1220; --surface: #1B2033; --line: #2C3350; --ink: #F4ECD8; --muted: #B3A58A;
+  --amber: #F2B33D; --amber-bg: #3A2E14; --crimson: #F07A82; --crimson-bg: #3A1820;
+  --teal: #7CCBC6; --teal-bg: #15302F; --navy: #F4ECD8; --code-bg: #262C45;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.7; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 80px; }
+a { color: var(--amber); }
+code, .mono { font-family: var(--mono); font-size: 0.86em; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+/* header */
+.masthead { display: grid; gap: 12px; padding-bottom: 28px; border-bottom: 3px double var(--line); }
+.eyebrow { font-family: var(--display); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: 12px; color: var(--crimson); }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 5vw, 48px); line-height: 1.1; margin: 0; text-wrap: balance; }
+.lede { max-width: 68ch; margin: 0; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; color: var(--muted); align-items: center; }
+
+.tag { display: inline-block; font-family: var(--display); font-weight: 700; font-size: 11px; letter-spacing: .08em; padding: 1px 7px; border: 1.5px solid currentColor; border-radius: 2px; text-transform: uppercase; white-space: nowrap; line-height: 1.6; }
+.tag.dummy { color: var(--amber); background: var(--amber-bg); }
+.tag.pure { color: var(--teal); background: var(--teal-bg); }
+.tag.guard { color: var(--crimson); background: var(--crimson-bg); }
+.tag.test { color: var(--muted); }
+
+/* flow */
+.flows { display: grid; gap: 20px; margin-block: 32px; }
+.flow h2 { font-family: var(--display); font-size: 18px; margin: 0 0 10px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; counter-reset: s; }
+.steps li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); padding: 10px 12px; font-size: 13.5px; line-height: 1.5; min-width: 0; }
+.steps li::before { content: counter(s); display: block; font-family: var(--display); font-weight: 700; color: var(--amber); font-size: 13px; }
+.steps code { font-size: .8em; }
+
+/* body grid */
+.layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 40px; align-items: start; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow-y: auto; font-size: 13px; padding-right: 6px; }
+.search { width: 100%; font: inherit; font-size: 14px; padding: 8px 10px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 2px; margin-bottom: 14px; }
+.toc h3 { font-family: var(--display); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--crimson); margin: 16px 0 4px; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc a { display: block; padding: 2px 0; color: var(--ink); text-decoration: none; font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+.toc a:hover { color: var(--amber); }
+
+section.group { display: grid; gap: 18px; margin-bottom: 44px; }
+section.group > h2 { font-family: var(--display); font-weight: 700; font-size: 26px; margin: 0; padding-bottom: 6px; border-bottom: 2px solid var(--ink); display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+section.group > h2 small { font-family: var(--body); font-weight: 400; font-size: 14px; color: var(--muted); }
+h3.sub { font-family: var(--display); font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 10px 0 -6px; }
+
+article.file { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--navy); padding: 16px 20px 6px; min-width: 0; scroll-margin-top: 20px; }
+article.file header { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin-bottom: 4px; }
+article.file .path { font-family: var(--mono); font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
+article.file > p { margin: 0 0 10px; max-width: 75ch; }
+dl.fns { margin: 0; display: grid; }
+dl.fns dt { font-family: var(--mono); font-size: 13px; font-weight: 600; padding-top: 10px; border-top: 1px dashed var(--line); color: var(--amber); overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+dl.fns dt .sig { color: var(--muted); font-weight: 400; }
+dl.fns dd { margin: 2px 0 10px; max-width: 78ch; }
+dl.fns dd ol, dl.fns dd ul { margin: 4px 0; padding-left: 22px; }
+.note { font-size: 13.5px; color: var(--muted); border-left: 2px solid var(--amber); padding-left: 10px; margin: 6px 0 12px; max-width: 75ch; }
+.empty { display: none; color: var(--muted); }
+[hidden] { display: none !important; }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  nav.toc { position: static; max-height: none; }
+  .toc ul { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">แฟ้มคดี · ผังโค้ด</div>
+    <h1>PatricJane: แต่ละไฟล์ แต่ละฟังก์ชันทำอะไร</h1>
+    <p class="lede">อธิบายทุกไฟล์ใน <code>frontend/</code> และ <code>backend/</code> ว่าทำหน้าที่อะไรและทำงานยังไง เรียงจากไฟล์ตั้งค่า ไปจุดเริ่มต้นของโปรแกรม แล้วลงลึกไปที่ logic ใช้ช่องค้นหาด้านซ้ายกรองตามชื่อไฟล์หรือชื่อฟังก์ชันได้</p>
+    <div class="legend">
+      <span><span class="tag dummy">Dummy</span> ข้อมูล/โค้ดชั่วคราว จะถูกแทนด้วย API หรือ engine จริง</span>
+      <span><span class="tag pure">Pure</span> ฟังก์ชันบริสุทธิ์ ไม่มี side effect ทดสอบได้โดยไม่ต้องมี DB</span>
+      <span><span class="tag guard">กันข้อมูลรั่ว</span> จุดที่ป้องกันไม่ให้ความจริงของคดีหลุดไป client</span>
+    </div>
+  </header>
+
+  <div class="flows">
+    <div class="flow">
+      <h2>เส้นทางของหนึ่งคำถาม: ฝั่ง frontend (ตอนนี้ยังทำงานในเครื่อง)</h2>
+      <ol class="steps">
+        <li>ผู้เล่นพิมพ์หรือกดปุ่มใน <code>QuestionInput</code> / <code>EvidencePanel</code></li>
+        <li><code>useInterrogation.ask()</code> หักคำถาม 1 ข้อ และใส่ข้อความผู้เล่นลงแชท</li>
+        <li>ตั้ง <code>thinking</code> แล้วรอ 700ms (แทนเวลาที่ server จะตอบ)</li>
+        <li>หาคำตอบจาก <code>dummyCase.ts</code> เปลี่ยน mood และบันทึกโน้ตคดี</li>
+        <li><code>ChatPanel</code> + <code>Typer</code> แสดงคำตอบแบบพิมพ์ทีละตัว</li>
+      </ol>
+    </div>
+    <div class="flow">
+      <h2>เส้นทางของหนึ่งคำถาม: ฝั่ง backend <code>POST /api/sessions/:id/interrogate</code></h2>
+      <ol class="steps">
+        <li><code>routes/sessions.ts</code> ตรวจ body ด้วย zod</li>
+        <li><code>sessionService.interrogate()</code> โหลด session + คดี</li>
+        <li><code>engine.spendQuestion()</code> หักคำถาม ถ้าเหลือ 0 ตอบ 403</li>
+        <li>หาคำตอบ (Dummy) หรือเรียก <code>llm.generate()</code></li>
+        <li><code>saveSession()</code> เขียนกลับใน transaction เดียวแบบเช็ก version แล้วบันทึก transcript</li>
+        <li><code>publicView</code> คัดเฉพาะฟิลด์ที่ส่งได้ แล้วตอบกลับเป็น JSON</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="สารบัญ">
+      <label for="q" class="eyebrow" style="display:block;margin-bottom:6px">ค้นหา</label>
+      <input id="q" class="search" type="search" placeholder="เช่น spendQuestion, Typer" autocomplete="off">
+      <div id="tocList"></div>
+    </nav>
+
+    <main id="content">
+
+<!-- ================= FRONTEND ================= -->
+<section class="group" data-group="Frontend">
+  <h2>Frontend <small>React + Vite + Tailwind v4 · <code>frontend/</code></small></h2>
+
+  <h3 class="sub">ตั้งค่าโปรเจกต์</h3>
+
+  <article class="file" id="fe-package">
+    <header><span class="path">frontend/package.json</span></header>
+    <p>รายชื่อ dependency และคำสั่งที่รันได้</p>
+    <dl class="fns">
+      <dt>scripts</dt>
+      <dd><code>dev</code> เปิด Vite dev server, <code>build</code> สร้างไฟล์จริงไว้ใน <code>dist/</code>, <code>preview</code> เปิดดูผล build, <code>format</code> จัดรูปแบบโค้ดด้วย oxfmt</dd>
+      <dt>dependencies</dt>
+      <dd>ตอนรันใช้แค่ React 19 กับ React DOM ส่วนเครื่องมืออื่น (Vite, Tailwind, TypeScript) อยู่ใน devDependencies</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-vite">
+    <header><span class="path">frontend/vite.config.ts</span></header>
+    <p>ตั้งค่า Vite ซึ่งเป็นตัว build และ dev server</p>
+    <dl class="fns">
+      <dt>defineConfig({...})</dt>
+      <dd>เปิดปลั๊กอิน <code>react()</code> (แปลง JSX + hot reload) และ <code>tailwindcss()</code> ตั้ง alias <code>@</code> ให้ชี้ไปที่ <code>src/</code> และให้ dev server ใช้ port 5173</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-tsconfig">
+    <header><span class="path">frontend/tsconfig.json</span></header>
+    <p>ตั้งค่า TypeScript เปิด <code>strict: true</code> ตามกฎของโปรเจกต์ ใช้ <code>moduleResolution: bundler</code> เพราะ Vite เป็นคนรวมไฟล์ และมี path alias <code>@/*</code> ให้ตรงกับ Vite</p>
+  </article>
+
+  <article class="file" id="fe-misc">
+    <header><span class="path">frontend/index.html · .mise.toml · .gitignore · .gitattributes</span></header>
+    <p><code>index.html</code> คือหน้า HTML หน้าเดียวของแอป มี <code>&lt;div id="root"&gt;</code> ให้ React มาวาดลง และโหลด <code>src/main.tsx</code> ส่วน <code>.mise.toml</code> กำหนดให้ใช้ Node 22 กับ pnpm ไฟล์ <code>.gitignore</code> กับ <code>.gitattributes</code> เป็นค่าตั้งของ git</p>
+  </article>
+
+  <h3 class="sub">จุดเริ่มต้นและสไตล์</h3>
+
+  <article class="file" id="fe-main">
+    <header><span class="path">src/main.tsx</span></header>
+    <p>ไฟล์แรกที่เบราว์เซอร์รัน</p>
+    <dl class="fns">
+      <dt>ReactDOM.createRoot(...).render(&lt;App /&gt;)</dt>
+      <dd>หา <code>#root</code> ใน HTML แล้ววาด <code>App</code> ลงไป ครอบด้วย <code>StrictMode</code> ซึ่งในโหมด dev จะรัน effect ซ้ำ 2 รอบเพื่อช่วยจับบั๊ก และ import <code>index.css</code> เข้ามาเพื่อให้สไตล์ทั้งหมดถูกโหลด</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-css">
+    <header><span class="path">src/index.css</span></header>
+    <p>สไตล์รวมทั้งเกม โหลดฟอนต์ pixel 2 ตัว (Press Start 2P สำหรับหัวข้อ, VT323 สำหรับเนื้อหา) แล้ว import Tailwind</p>
+    <dl class="fns">
+      <dt>.stage</dt>
+      <dd>ฉากขนาดจริง 360×225 px ตามกฎ "base canvas" แล้วขยายทั้งก้อนด้วย <code>transform: scale()</code> จาก <code>App</code> ใช้ <code>transform-origin: 0 0</code> ให้ขยายจากมุมซ้ายบน และปิด font smoothing ให้ขอบตัวอักษรคม</dd>
+      <dt>.h / .label</dt>
+      <dd>.h คือหัวข้อฟอนต์ Press Start ตัวพิมพ์ใหญ่ ส่วน .label คือป้ายตัวพิมพ์ใหญ่ที่ไม่ตัดบรรทัด</dd>
+      <dt>.panel (.card, .dark)</dt>
+      <dd>กล่องที่ใช้กรอบ <code>border-image</code> แบบ nine-slice โดยดึงรูปกรอบจากตัวแปร CSS <code>--n-paper</code> ที่สร้างใน <code>theme.ts</code></dd>
+      <dt>.btn (+ amber, crimson, teal, on, :hover, :active, :disabled)</dt>
+      <dd>ปุ่มทุกแบบ แต่ละสีกำหนดตัวแปร <code>--up</code> (ตอนปกติ) กับ <code>--down</code> (ตอนกด) เวลากด ปุ่มจะสลับเป็นกรอบเงากลับด้านและเลื่อนลง 1px ทำให้ดูเหมือนปุ่มยุบลงจริง</dd>
+      <dt>.scroll · .dither · .pip · .blink</dt>
+      <dd>.scroll ซ่อน scrollbar, .dither เป็นพื้นหลังลายตารางหมากรุกจาก SVG เล็กๆ ใช้แทนการทำโปร่งใส (เพราะห้ามใช้ blur), .pip คือช่องสี่เหลี่ยม 5px ของตัวนับคำถาม, .blink กระพริบด้วย <code>steps(1)</code> ให้ตัดภาพทันทีโดยไม่ค่อยๆ จาง</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-types">
+    <header><span class="path">src/types.ts</span></header>
+    <p>รวม type ที่ใช้ร่วมกันทั้ง frontend</p>
+    <dl class="fns">
+      <dt>Kind</dt><dd>ประเภทของคำตอบ: <code>ask</code> ตอบธรรมดา, <code>contradiction</code> โดนจับโกหก, <code>truth</code> ยอมพูดความจริง, <code>deflect</code> เลี่ยงตอบ ค่านี้ใช้กำหนดสีของฟองแชท</dd>
+      <dt>Msg · Reaction · Pin</dt><dd>Msg คือข้อความหนึ่งอันในแชท, Reaction คือคำตอบที่ผู้ต้องสงสัยจะพูดพร้อม mood ใหม่และโน้ต, Pin คือโน้ตในแฟ้มคดี</dd>
+      <dt>Suspect · Evidence · Preset · AccuseState</dt><dd>ข้อมูลผู้ต้องสงสัย, หลักฐาน, คำถามสำเร็จรูป และสถานะหน้าต่างกล่าวหา (ปิดอยู่ / กำลังเลือกคน / เลือกแล้ว)</dd>
+      <dt>Who · Mood <span class="sig">(re-export จาก pixel.ts)</span></dt><dd>id ของตัวละคร 3 ตัว และอารมณ์ 4 แบบที่ใช้วาดหน้า</dd>
+    </dl>
+  </article>
+
+  <h3 class="sub">ข้อมูล</h3>
+
+  <article class="file" id="fe-dummy">
+    <header><span class="path">src/data/dummyCase.ts</span><span class="tag dummy">Dummy</span></header>
+    <p>ข้อมูลคดีตัวอย่างทั้งหมดรวมไว้ในไฟล์เดียว มีคอมเมนต์ (DUMMY) บอกว่าในอนาคตแต่ละก้อนจะมาจาก endpoint ไหน</p>
+    <dl class="fns">
+      <dt>MAX_Q</dt><dd>จำนวนคำถามสูงสุดต่อคน = 10</dd>
+      <dt>CULPRIT <span class="tag guard">ต้องย้ายไป server</span></dt><dd>id ของคนร้ายตัวจริง ตอนนี้อยู่ฝั่ง client แค่ชั่วคราว ของจริงต้องให้ server ตัดสินผ่าน <code>/accuse</code> เท่านั้น</dd>
+      <dt>suspects · evidence · caseInfo</dt><dd>รายชื่อผู้ต้องสงสัย, หลักฐาน และหัวคดี เป็นข้อมูลที่ผู้เล่นเห็นได้</dd>
+      <dt>openers · closers</dt><dd>ประโยคเปิดตอนเริ่มคุย และประโยคปิดตอนผู้ต้องสงสัยเรียกทนาย (คำถามหมด)</dd>
+      <dt>presets</dt><dd>คำถามสำเร็จรูป 4 ข้อต่อคน พร้อมคำตอบ</dd>
+      <dt>reactions <span class="tag guard">ต้องย้ายไป server</span></dt><dd>คำตอบเมื่อยื่นหลักฐานแต่ละชิ้นให้แต่ละคน มีผลต่อ mood และโน้ตคดี ในอนาคต engine กับ LLM จะเป็นคนสร้าง</dd>
+      <dt>freeTextReply · repeatEvidenceReply · verdictText</dt><dd>คำตอบสำรองเวลาพิมพ์คำถามเอง, คำตอบเวลายื่นหลักฐานซ้ำ และข้อความสรุปผลคดี</dd>
+    </dl>
+  </article>
+
+  <h3 class="sub">Hooks (logic ของเกม)</h3>
+
+  <article class="file" id="fe-scale">
+    <header><span class="path">src/hooks/useStageScale.ts</span></header>
+    <p>คำนวณว่าจะขยายฉาก 360×225 กี่เท่าให้พอดีหน้าจอ</p>
+    <dl class="fns">
+      <dt>calcScale() <span class="sig">→ number</span></dt>
+      <dd>เอา <code>min(กว้างจอ/360, สูงจอ/225)</code> แล้วปัดลงเป็นจำนวนเต็ม (ต่ำสุด 1) ต้องเป็นจำนวนเต็มเพราะถ้าขยาย 3.5 เท่า pixel บางเม็ดจะกว้าง 3 บางเม็ด 4 ภาพจะดูเบี้ยว</dd>
+      <dt>useStageScale() <span class="sig">→ number</span></dt>
+      <dd>เก็บค่า scale ไว้ใน state ฟัง event <code>resize</code> ของหน้าต่างเพื่อคำนวณใหม่ และถอด listener ออกตอน component ถูกถอด</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-interrogation">
+    <header><span class="path">src/hooks/useInterrogation.ts</span><span class="tag dummy">Dummy</span></header>
+    <p>หัวใจของฝั่ง frontend เก็บ state ทั้งหมดของห้องสอบสวน และมีฟังก์ชันให้ component เรียก ตอนนี้ตัดสินทุกอย่างในเครื่อง พอต่อ API แล้วงานส่วนนี้จะย้ายไปให้ server ทำ</p>
+    <div class="note">State ที่เก็บแยกตามผู้ต้องสงสัยแต่ละคน: <code>log</code> (แชท), <code>left</code> (คำถามที่เหลือ), <code>moods</code>, <code>used</code> (คำถามสำเร็จรูปและหลักฐานที่ใช้ไปแล้ว), <code>closed</code> (เรียกทนายแล้วหรือยัง) ส่วนที่ใช้ร่วมกัน: <code>pins</code>, <code>thinking</code>, <code>typingId</code>, <code>sel</code> (หลักฐานที่เลือกอยู่)</div>
+    <dl class="fns">
+      <dt>perSuspect(f) <span class="sig">→ Record&lt;Who, T&gt;</span></dt>
+      <dd>สร้าง object ที่มี key เป็น id ของผู้ต้องสงสัยทุกคน โดยเรียก <code>f(id)</code> หาค่าของแต่ละคน ใช้ตั้งค่าเริ่มต้นของ state เช่นให้ทุกคนมีคำถาม 10 ข้อ</dd>
+      <dt>push(target, m)</dt>
+      <dd>ต่อข้อความ <code>m</code> ท้ายแชทของผู้ต้องสงสัย <code>target</code> โดยสร้าง object ใหม่ ไม่แก้ของเดิม เพราะ React จะ re-render ก็ต่อเมื่อ reference ของ state เปลี่ยน</dd>
+      <dt>say(target, text, kind)</dt>
+      <dd>ให้ผู้ต้องสงสัยพูด: ออก id ใหม่จาก <code>uid</code> แล้ว push ข้อความ ถ้าผู้เล่นกำลังเปิดดูคนนั้นอยู่ จะตั้ง <code>typingId</code> ให้เริ่มเอฟเฟกต์พิมพ์ การเช็กใช้ <code>whoRef</code> แทน <code>who</code> เพราะ say ถูกเรียกจากใน setTimeout ซึ่งจะเห็นแต่ค่า <code>who</code> เก่าตอนที่ตั้งเวลาไว้ (stale closure) แต่ ref จะเป็นค่าปัจจุบันเสมอ</dd>
+      <dt>useEffect (เรียกทนาย)</dt>
+      <dd>เมื่อคำถามของคนที่เปิดอยู่เหลือ 0, ยังไม่ปิด และไม่ได้กำลังตอบอยู่ จะตั้ง <code>closed</code> แล้วให้พูดประโยคปิดจาก <code>closers</code></dd>
+      <dt>ask(text, r)</dt>
+      <dd>ฟังก์ชันกลางที่การถามทุกแบบมาผ่าน:
+        <ol><li>ถ้ากำลังยุ่ง (<code>busy</code>) หรือคำถามหมดจะไม่ทำอะไร</li><li>จำ <code>target</code> ไว้ก่อน เผื่อผู้เล่นสลับไปดูคนอื่นระหว่างรอ</li><li>หักคำถาม 1 ข้อ แล้วใส่ข้อความของผู้เล่นลงแชท</li><li>ตั้ง <code>thinking</code> ให้ขึ้น "..."</li><li>ผ่านไป 700ms ให้ผู้ต้องสงสัยพูด <code>r.text</code>, เปลี่ยน mood และถ้ามีโน้ตก็เพิ่มลงแฟ้มคดี (ไม่เพิ่มถ้าซ้ำ)</li></ol></dd>
+      <dt>askPreset(i)</dt>
+      <dd>ถามคำถามสำเร็จรูปข้อที่ i ถ้าเคยถามแล้วจะข้าม ถ้ายังจะบันทึกว่าใช้แล้ว แล้วเรียก <code>ask</code> พร้อมคำตอบที่เขียนไว้</dd>
+      <dt>askText(text)</dt>
+      <dd>ถามจากข้อความที่ผู้เล่นพิมพ์เอง ตอนนี้ได้คำตอบสำรอง <code>freeTextReply</code> เสมอ (Dummy) และ mood ไม่เปลี่ยน</dd>
+      <dt>confront()</dt>
+      <dd>ยื่นหลักฐานที่เลือกอยู่ ถ้าเคยยื่นชิ้นนี้ให้คนนี้แล้วจะได้คำตอบ "ยื่นซ้ำ" ถ้ายังจะดึงจาก <code>reactions[who][evidenceId]</code> จากนั้นบันทึกว่าใช้แล้ว แล้วล้างการเลือก</dd>
+      <dt>toggleEvidence(id) · switchTo(id) · finishTyping()</dt>
+      <dd>toggleEvidence กดเลือกหรือยกเลิกหลักฐาน, switchTo สลับไปคุยกับคนอื่น (หยุดพิมพ์และล้างหลักฐานที่เลือก), finishTyping ล้าง <code>typingId</code> เมื่อพิมพ์จบ</dd>
+      <dt>ค่าที่คำนวณได้</dt>
+      <dd><code>busy</code> = กำลังคิดหรือกำลังพิมพ์, <code>qLeft</code> = คำถามที่เหลือของคนที่เปิดอยู่, <code>asked</code> = จำนวนคำถามที่ใช้ไปรวมทุกคน (นำไปเดินนาฬิกา)</dd>
+    </dl>
+  </article>
+
+  <h3 class="sub">lib (วาด pixel art)</h3>
+
+  <article class="file" id="fe-pixel">
+    <header><span class="path">src/lib/pixel.ts</span><span class="tag pure">Pure</span></header>
+    <p>วาดภาพทุกอย่างด้วยโค้ด ไม่มีไฟล์รูปเลย ภาพคนเป็นอาร์เรย์สี 64×64 ช่อง (<code>Px</code>) เลือกสีทีละ pixel จากรูปทรงคณิตศาสตร์ เช่นวงรี แล้วลงเงาด้วย dithering (ลายตารางหมากรุกสลับ 2 สี) แทน gradient ตามกฎงานภาพ</p>
+    <dl class="fns">
+      <dt>W · K · Who · Mood · Px · Fn</dt>
+      <dd>W = 64 คือขนาดรูปคน, K = สีเส้นขอบ #1A1414, Px = อาร์เรย์สี (null = ว่าง), Fn = ฟังก์ชันที่ตอบว่าพิกัด (x,y) อยู่ในรูปทรงหรือเปล่า</dd>
+      <dt>chk(x, y) <span class="sig">→ boolean</span></dt>
+      <dd>คืน true ถ้า <code>(x+y)</code> เป็นเลขคู่ ได้ลายตารางหมากรุก ใช้เป็นฐานของ dithering ทุกจุด</dd>
+      <dt>SKIN · CLOTH · HAIR</dt>
+      <dd>ชุดสีของแต่ละตัวละคร มี 3 ระดับ [สว่าง, กลาง, เงา]</dd>
+      <dt>shade(x, y, u, c) <span class="sig">→ สี</span></dt>
+      <dd>เลือกสีจากค่า <code>u</code> ที่บอกว่าจุดนี้อยู่ฝั่งสว่าง (ติดลบ) หรือฝั่งเงา (บวก) ตามแสงไฟที่มาจากซ้ายบน ระหว่างแต่ละระดับมีแถบที่ใช้ <code>chk</code> สลับ 2 สี จึงเปลี่ยนสีได้นุ่มแบบเกม 16-bit</dd>
+      <dt>paint(b, t, f)</dt>
+      <dd>ไล่ทุก pixel ถ้า <code>t(x,y)</code> บอกว่าอยู่ในรูปทรง จะใส่สีจาก <code>f(x,y)</code> ลงใน buffer <code>b</code></dd>
+      <dt>outer(b, t)</dt>
+      <dd>วาดเส้นขอบหนา 1px รอบรูปทรง โดยหา pixel ที่อยู่นอกรูปทรงแต่ติดกับรูปทรงทางบน ล่าง ซ้าย หรือขวา แล้วระบายเป็นสี K (ตามกฎ "1px dark outlines")</dd>
+      <dt>set(b, x, y, c)</dt>
+      <dd>เขียนสีลง pixel เดียว เช็กก่อนว่าไม่หลุดขอบภาพ</dd>
+      <dt>bgPixel(x, y)</dt>
+      <dd>พื้นหลังของรูปคน: แสงโคมไฟที่มุมซ้ายบน ใช้ระยะห่าง <code>Math.hypot</code> แบ่งเป็นวงสีเหลือง → ส้ม → น้ำตาล → น้ำเงินเข้ม มี dithering คั่นระหว่างวง และมีแถบมู่ลี่ทางขวา</dd>
+      <dt>renderPortrait(who, mood, blink, sweatY) <span class="sig">→ Px</span></dt>
+      <dd>วาดคนทีละชั้นจากหลังมาหน้า:
+        <ol><li>ลำตัวและชุด (คอวีของ Voss, เนคไทของ Pike, หูกระต่ายของ Doyle)</li><li>ผมยาวด้านหลัง (เฉพาะ Voss)</li><li>คอ หู และหัว ซึ่งเป็นวงรีจากสมการ <code>(x/a)²+(y/b)² ≤ 1</code></li><li>จมูก หนวด และเครา</li><li>ทรงผมของแต่ละคน</li><li>ตา: <code>blink</code> = หลับตาเป็นเส้น, <code>broken</code> = เปลือกตาหนัก, Doyle จะหลบตาเสมอยกเว้นตอนโกรธ</li><li>คิ้วเอียงตาม mood (โกรธ = ขมวดลง, กังวล = ยกขึ้น)</li><li>แว่นของ Pike วาดเป็นวงแหวนจากระยะห่างที่ใกล้ 4.4 pixel</li><li>ปากตาม mood</li><li>หยดเหงื่อที่ตำแหน่ง <code>sweatY</code></li></ol>
+        สุดท้ายเติม pixel ที่ยังว่างด้วย <code>bgPixel</code></dd>
+      <dt>drawBackdrop(ctx)</dt>
+      <dd>วาดฉากหลังขนาด 360×225 ลง canvas เป็นวงแสงรูปวงรี (หารแกน x ด้วย 1.6 ให้ยืดตามแนวนอน) มืดลงเป็นขั้นๆ พร้อม dithering แล้วโรยฝุ่นสีส้ม 16 จุดด้วยตัวสุ่มเทียมแบบ LCG ที่ใช้ seed 7 ตายตัว จึงได้ตำแหน่งเดิมทุกครั้ง</dd>
+      <dt>SPRITE_PAL · SPRITES</dt>
+      <dd>ไอคอน 16×16 เขียนเป็นตัวอักษร 16 แถว ตัวอักษรแต่ละตัวแทนหนึ่งสีใน SPRITE_PAL (<code>.</code> = โปร่งใส) มีกุญแจ, จดหมาย, ตั๋ว, แก้ว และแว่นขยาย</dd>
+      <dt>nine(fill, hi, sh, s) <span class="sig">→ CSS url()</span></dt>
+      <dd>สร้างรูปกรอบ SVG ขนาดเล็ก (2s+1 px) มีไส้, ขอบสว่างด้านซ้ายบน, ขอบเงาด้านขวาล่าง, เส้นขอบดำ และตัดมุม แล้วแปลงเป็น data URI ให้ CSS <code>border-image</code> ใช้แบบ nine-slice คือมุมคงที่และขอบยืดได้ ทำให้กล่องมีขนาดเท่าไรก็ได้โดยภาพไม่เบลอ</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-theme">
+    <header><span class="path">src/lib/theme.ts</span></header>
+    <dl class="fns">
+      <dt>stageVars</dt>
+      <dd>สร้างตัวแปร CSS ทั้งหมด (<code>--n-paper</code>, <code>--b-amber</code>, ...) โดยเรียก <code>nine()</code> ด้วยสีจาก palette ของเกม แล้วใส่เป็น style ของ <code>.stage</code> ทำให้คลาส .panel และ .btn ใน index.css ดึงไปใช้ได้</dd>
+    </dl>
+  </article>
+
+  <h3 class="sub">Components</h3>
+
+  <article class="file" id="fe-app">
+    <header><span class="path">src/App.tsx</span></header>
+    <p>ประกอบหน้าจอทั้งหมด แทบไม่มี logic เอง</p>
+    <dl class="fns">
+      <dt>App()</dt>
+      <dd>เรียก <code>useStageScale</code> และ <code>useInterrogation</code> และเก็บ state ของหน้าต่างกล่าวหา คำนวณ <code>locked</code> (ห้ามกดเพราะยุ่งหรือคำถามหมด) และนาฬิกาที่เริ่ม 11:48 PM แล้วเดินไป 1 นาทีทุกๆ 3 คำถาม จากนั้นวางเลย์เอาต์ 3 คอลัมน์ (ผู้ต้องสงสัย | ห้องสอบสวน | หลักฐาน) ไว้ในกล่องที่ขยายด้วย <code>scale</code></dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-portrait">
+    <header><span class="path">components/Portrait.tsx</span></header>
+    <dl class="fns">
+      <dt>Portrait({ who, mood, size = 64, animate = true })</dt>
+      <dd>รูปหน้าคนบน canvas 64×64 ถ้า <code>animate</code> จะนับ tick <code>t</code> ทุก 250ms แล้ววาดใหม่ทุก tick:
+        <ul><li>กระพริบตาทุก 16 tick (ราว 4 วินาที)</li><li>ถ้า nervous หรือ broken จะมีเหงื่อไหลลง</li><li>ถ้า angry หรือ broken หน้าจะสั่นซ้ายขวา 1px</li></ul>
+        เอาผลจาก <code>renderPortrait</code> มาระบายทีละ pixel ด้วย <code>fillRect</code> แล้วขยายด้วย CSS โดยใช้ <code>imageRendering: pixelated</code> ให้ไม่เบลอ</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-sprite">
+    <header><span class="path">components/Sprite.tsx · Backdrop.tsx</span></header>
+    <dl class="fns">
+      <dt>Sprite({ name })</dt>
+      <dd>อ่าน <code>SPRITES[name]</code> ทีละแถวทีละตัวอักษร แปลงเป็นสีผ่าน <code>SPRITE_PAL</code> แล้ววาดลง canvas 16×16</dd>
+      <dt>Backdrop()</dt>
+      <dd>canvas 360×225 ที่เรียก <code>drawBackdrop</code> ครั้งเดียวตอนแสดงครั้งแรก (dependency array ว่าง)</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-typer">
+    <header><span class="path">components/Typer.tsx</span></header>
+    <dl class="fns">
+      <dt>Typer({ text, run, onDone, onTick })</dt>
+      <dd>เอฟเฟกต์พิมพ์ทีละตัว: <code>n</code> คือจำนวนตัวอักษรที่โชว์ ถ้า <code>run</code> จะเพิ่ม n ทุก 30ms ทุกครั้งที่ n เปลี่ยนจะเรียก <code>onTick</code> (ให้แชทเลื่อนลง) และเรียก <code>onDone</code> เมื่อพิมพ์ครบ ข้อความส่วนที่ยังไม่โชว์ยังวาดอยู่แต่มองไม่เห็น (<code>invisible</code>) ฟองแชทจึงมีขนาดเต็มตั้งแต่แรกและไม่กระตุก ข้อความเก่า (run = false) จะโชว์ครบทันที</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-header">
+    <header><span class="path">components/Header.tsx</span></header>
+    <dl class="fns">
+      <dt>Header({ title, caseNumber, clock, onAccuse })</dt>
+      <dd>แถบบนสุด: ไอคอนแว่นขยาย, ชื่อเกม, เลขคดี, นาฬิกา และปุ่ม ACCUSE! ซึ่งเรียก <code>onAccuse</code> เพื่อเปิดหน้าต่างกล่าวหา</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-suspectlist">
+    <header><span class="path">components/SuspectList.tsx · CaseNotes.tsx</span></header>
+    <dl class="fns">
+      <dt>SuspectList({ suspects, active, left, onSelect })</dt>
+      <dd>ปุ่มผู้ต้องสงสัยแต่ละคน มีรูปเล็กแบบไม่ขยับ (<code>animate={false}</code> เพื่อประหยัดการวาด), ชื่อ, อาชีพ และคำถามที่เหลือซึ่งเป็นสีแดงเมื่อเหลือไม่เกิน 3 คนที่เลือกอยู่จะได้คลาส <code>on</code> และ <code>aria-pressed</code></dd>
+      <dt>CaseNotes({ pins })</dt>
+      <dd>แฟ้มบันทึกคดี โน้ตที่ได้จากการจับโกหกมีขอบซ้ายสีแดง ส่วนที่ได้ความจริงมีขอบสีเขียวน้ำทะเล</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-profile">
+    <header><span class="path">components/SuspectProfile.tsx · QuestionCounter.tsx</span></header>
+    <dl class="fns">
+      <dt>SuspectProfile({ suspect, mood, left })</dt>
+      <dd>ส่วนบนของห้องสอบสวน: รูปใหญ่ที่ขยับได้ตาม mood, นามสกุล, อาชีพ, คำให้การ (alibi), ตัวนับคำถาม และ mood (ตัวแดงเมื่อไม่ใช่ calm)</dd>
+      <dt>QuestionCounter({ left })</dt>
+      <dd>ข้อความ "Questions 07/10" กับ pip 10 ช่อง ช่องที่ยังเหลือเป็นสีอำพัน และเปลี่ยนเป็นสีแดงทั้งหมดเมื่อเหลือไม่เกิน 3</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-chat">
+    <header><span class="path">components/ChatPanel.tsx</span></header>
+    <dl class="fns">
+      <dt>ChatPanel({ messages, thinking, typingId, onTypingDone })</dt>
+      <dd>กล่องแชท มี ref ของตัวเอง
+        <ul><li><code>scrollDown()</code> เลื่อนไปล่างสุดโดยตั้ง <code>scrollTop = scrollHeight</code> ถูกเรียกเมื่อมีข้อความใหม่หรือ thinking เปลี่ยน และทุกตัวอักษรที่ Typer พิมพ์</li><li>สีฟองแชท: ของผู้เล่นเป็นสีอำพันชิดขวา, contradiction เป็นสีแดงเข้มพร้อมป้าย "!! Contradiction", truth เป็นสีเขียวน้ำทะเลพร้อมป้าย "** Truth", นอกนั้นเป็นสีกระดาษ</li><li>เฉพาะข้อความที่ id ตรงกับ <code>typingId</code> จะพิมพ์ทีละตัว</li><li>ระหว่าง thinking จะแสดงฟอง "..." กระพริบ</li></ul></dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-input">
+    <header><span class="path">components/QuestionInput.tsx</span></header>
+    <dl class="fns">
+      <dt>QuestionInput({ presets, used, disabled, noneLeft, onPreset, onAsk })</dt>
+      <dd>ปุ่มคำถามสำเร็จรูป 4 ปุ่ม (ปุ่มที่ใช้แล้วขึ้น "x" และกดไม่ได้) และช่องพิมพ์คำถามเอง เก็บข้อความที่พิมพ์ (<code>draft</code>) เป็น state ภายใน component นี้ กด Enter หรือ ASK จะเรียก <code>send()</code> ซึ่งตัดช่องว่างหัวท้าย ล้างช่อง แล้วเรียก <code>onAsk</code> จำกัดความยาว 48 ตัวอักษร และ placeholder ขึ้น "NO QUESTIONS LEFT" เมื่อคำถามหมด</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-evidence">
+    <header><span class="path">components/EvidencePanel.tsx</span></header>
+    <dl class="fns">
+      <dt>EvidencePanel({ evidence, selected, used, surname, disabled, onToggle, onPresent })</dt>
+      <dd>ตารางหลักฐาน 2 คอลัมน์ (ชิ้นที่ยื่นให้คนนี้ไปแล้วขึ้น DONE) กดเลือกแล้วรายละเอียดจะแสดงด้านล่าง ปุ่ม Present! กดได้เมื่อมีหลักฐานที่เลือกอยู่และยังไม่ล็อก ด้านล่างมีคำอธิบายสี</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="fe-accuse">
+    <header><span class="path">components/AccuseModal.tsx</span><span class="tag dummy">Dummy</span></header>
+    <dl class="fns">
+      <dt>AccuseModal({ state, suspects, culprit, verdict, onChange })</dt>
+      <dd>หน้าต่างลอยบนพื้นหลัง dither ถ้า <code>state === 'pick'</code> จะแสดงรายชื่อให้เลือกคนร้าย ถ้าเลือกแล้วจะเทียบกับ <code>culprit</code> เพื่อแสดง "Case closed" หรือ "Wrong man" พร้อมคำอธิบาย ตอนนี้การเทียบทำบน client ชั่วคราว ในอนาคตจะใช้ผลจาก <code>POST /accuse</code> แทน</dd>
+    </dl>
+  </article>
+</section>
+
+<!-- ================= BACKEND ================= -->
+<section class="group" data-group="Backend">
+  <h2>Backend <small>Node.js + Express 5 + Prisma 7 + PostgreSQL · <code>backend/</code></small></h2>
+
+  <h3 class="sub">ตั้งค่าโปรเจกต์</h3>
+
+  <article class="file" id="be-package">
+    <header><span class="path">backend/package.json</span></header>
+    <dl class="fns">
+      <dt>scripts</dt>
+      <dd><code>dev</code> รันด้วย tsx แบบ watch (แก้ไฟล์แล้วรีสตาร์ทเอง) และโหลด <code>.env</code> ด้วยแฟล็ก <code>--env-file</code> ที่ Node มีมาในตัว · <code>build</code> สร้าง Prisma Client ก่อนแล้วคอมไพล์เป็น JS · <code>start</code> รันไฟล์ที่ build แล้ว · <code>typecheck</code> · <code>test</code> (vitest) · <code>postinstall</code>/<code>db:generate</code> สร้าง Prisma Client (ไปอยู่ที่ <code>src/generated/prisma</code> ซึ่ง gitignore ไว้) · <code>db:migrate</code> สร้างและรัน migration ในเครื่อง · <code>db:deploy</code> รัน migration ที่มีอยู่แล้ว · <code>db:push</code> ส่ง schema เข้า DB โดยไม่สร้างไฟล์ migration · <code>db:seed</code> ใส่คดีตัวอย่าง · <code>db:studio</code> เปิดหน้าดูข้อมูล</dd>
+      <dt>dependencies</dt>
+      <dd>Prisma 7 ต่อ DB ผ่าน <b>driver adapter</b> เสมอ จึงต้องมี <code>@prisma/adapter-pg</code> คู่กับ <code>pg</code> (ตัวที่เปิด connection pool จริง) <code>dotenv</code> ใช้เฉพาะใน <code>prisma.config.ts</code> เพราะ Prisma 7 ไม่อ่าน <code>.env</code> ให้เองแล้ว</dd>
+      <dt>pnpm.onlyBuiltDependencies</dt>
+      <dd>pnpm 10 ไม่รันสคริปต์ติดตั้งของแพ็กเกจโดยอัตโนมัติ (เพื่อความปลอดภัย) รายการนี้อนุญาตให้ Prisma และ esbuild รันสคริปต์ติดตั้งของมันได้</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-tsconfig">
+    <header><span class="path">tsconfig.json · tsconfig.build.json</span></header>
+    <p>ใช้ <code>module: NodeNext</code> ให้ตรงกับระบบ ES module ของ Node ผลคือการ import ไฟล์ในโปรเจกต์ต้องลงท้ายด้วย <code>.js</code> (เช่น <code>'./questions.js'</code>) ถึงไฟล์จริงจะเป็น .ts ก็ตาม เปิด <code>strict</code> และ <code>noUncheckedIndexedAccess</code> ที่บังคับให้เช็กเสมอว่าการดึงค่าจากอาร์เรย์อาจได้ undefined ส่วน tsconfig.build.json ไม่รวมไฟล์ test ตอน build</p>
+  </article>
+
+  <article class="file" id="be-env">
+    <header><span class="path">.env.example · docker-compose.yml · prisma.config.ts</span></header>
+    <p><code>.env.example</code> คือตัวอย่างค่าที่ต้องมี (PORT, CORS_ORIGIN, DATABASE_URL) ให้คัดลอกเป็น <code>.env</code> ซึ่งไฟล์นั้นถูก gitignore ไว้</p>
+    <p><code>docker-compose.yml</code> รัน PostgreSQL 17 ในเครื่อง (<code>docker compose up -d db</code>) มี healthcheck ด้วย <code>pg_isready</code> และเก็บข้อมูลไว้ใน volume <code>pg-data</code></p>
+    <p><code>prisma.config.ts</code> คือที่ตั้งค่าของ Prisma CLI ใน v7 (generate, migrate, studio): ระบุตำแหน่ง schema, ตำแหน่ง migration และ <code>DATABASE_URL</code> (โหลดจาก <code>.env</code> ด้วย dotenv) URL จึงไม่อยู่ใน <code>schema.prisma</code> แล้ว ส่วนตัวแอปเองส่ง URL ให้ adapter ใน <code>src/db/prisma.ts</code></p>
+  </article>
+
+  <h3 class="sub">Database (Prisma)</h3>
+
+  <article class="file" id="be-schema">
+    <header><span class="path">prisma/schema.prisma</span></header>
+    <p>บอก Prisma ว่าข้อมูลมีรูปแบบอะไร จากไฟล์นี้ Prisma จะสร้าง TypeScript client ที่มี type ครบ (generator <code>prisma-client</code> สร้างเป็นไฟล์ .ts ไว้ที่ <code>src/generated/prisma</code>) ใน PostgreSQL <code>model</code> คือตาราง และข้อมูลย่อยที่เคยฝังใน document ถูกแยกเป็นตารางลูกที่อ้างกลับด้วย foreign key id ทุกตัวเป็น UUID</p>
+    <dl class="fns">
+      <dt>model Case → cases <span class="tag guard">ground truth</span></dt>
+      <dd>คดีหนึ่งคดี มี <code>slug</code> ที่ห้ามซ้ำ, <code>suspects</code>, <code>evidence</code> และคอลัมน์ความจริงของคดี <code>culpritId</code>, <code>verdictCorrect</code>, <code>verdictWrong</code>, <code>reactions</code> ซึ่งห้ามส่งให้ client เด็ดขาด ส่วน <code>reactions</code> เป็น Json ไปก่อน เพราะยังไม่ได้ออกแบบ evidence graph</dd>
+      <dt>model CaseSuspect → case_suspects · CaseEvidence → case_evidence</dt>
+      <dd>แถวลูกของคดี key คือ (<code>caseId</code>, <code>id</code>) ใช้ <code>position</code> เก็บลำดับ เพราะ SQL ไม่รับประกันลำดับแถว จึงอ่านกลับด้วย <code>orderBy position</code> เสมอ (ดู <code>db/includes.ts</code>) ลบคดีแล้วแถวลูกลบตามด้วย</dd>
+      <dt>model Session → sessions</dt>
+      <dd>การเล่นหนึ่งรอบ มี <code>status</code> (ACTIVE / SOLVED / COLD), <code>discoveredEvidence</code>, <code>accusedId</code> และ <code>version</code> ที่บวก 1 ทุกครั้งที่เขียน ใช้กันการเขียนทับกัน (ดู saveSession)</dd>
+      <dt>model SuspectState → suspect_states</dt>
+      <dd>state ของผู้ต้องสงสัยหนึ่งคนในรอบนั้น (หนึ่งแถวต่อคน): composure, questionsRemaining, mood, commitments, confrontedEvidence, revealedSecrets ตรงกับ layer 3 ใน CLAUDE.md ส่วน <code>position</code> เก็บลำดับการแสดงผล</dd>
+      <dt>model Transcript → transcripts</dt>
+      <dd>บันทึกทุกตาที่คุย (คำถาม, หลักฐาน, intent, คำตอบ, ภาพ state ณ ตอนนั้น) เป็นแบบเพิ่มอย่างเดียวไม่แก้ และจะใช้เป็นข้อมูลเทรนโมเดลในอนาคต มี index ที่ (sessionId, suspectId)</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-seed">
+    <header><span class="path">prisma/seed.ts</span><span class="tag dummy">Dummy</span></header>
+    <dl class="fns">
+      <dt>sampleCase</dt><dd>คดีตัวอย่างชุดเดียวกับ frontend แต่มี opener/closer อยู่ในข้อมูลผู้ต้องสงสัย และมีความจริงของคดีอยู่ใน <code>truth</code> (รูปแบบ case file ที่ซ้อนกัน เหมือนที่จะเป็น JSON ในอนาคต)</dd>
+      <dt>main()</dt><dd>แปลง case file เป็นแถวในตาราง (suspects/evidence เป็นแถวลูกพร้อม <code>position</code>, ฟิลด์ใน truth เป็นคอลัมน์ของ cases) แล้วใช้ <code>upsert</code> ด้วย slug: ถ้ายังไม่มีคดีนี้จะสร้าง ถ้ามีแล้วจะอัปเดตและแทนที่แถวลูกทั้งหมด (<code>deleteMany</code> แล้ว <code>create</code>) จึงรันซ้ำกี่ครั้งก็ได้ ไม่เกิดข้อมูลซ้ำ เสร็จแล้วตัดการเชื่อมต่อ DB ใน <code>finally</code> seed ใช้ client ตัวเดียวกับแอป (<code>src/db/prisma.ts</code>)</dd>
+    </dl>
+  </article>
+
+  <h3 class="sub">จุดเริ่มต้นและโครงพื้นฐาน</h3>
+
+  <article class="file" id="be-index">
+    <header><span class="path">src/index.ts</span></header>
+    <dl class="fns">
+      <dt>createApp().listen(env.PORT)</dt><dd>เปิด server ตาม port ใน .env</dd>
+      <dt>shutdown()</dt><dd>เมื่อได้สัญญาณปิด (Ctrl+C = SIGINT หรือ SIGTERM จากระบบ) จะหยุดรับ request, ปิดการเชื่อมต่อ Prisma แล้วจบโปรแกรม เพื่อไม่ให้มี connection ค้าง</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-app">
+    <header><span class="path">src/app.ts</span></header>
+    <dl class="fns">
+      <dt>createApp() <span class="sig">→ Express app</span></dt>
+      <dd>ประกอบ server ตามลำดับ middleware:
+        <ol><li><code>cors</code> อนุญาตให้เฉพาะ frontend (CORS_ORIGIN) เรียกได้</li><li><code>express.json</code> แปลง body เป็น JSON และจำกัดขนาด 16kb</li><li><code>GET /api/health</code> ใช้เช็กว่า server ยังทำงาน</li><li>router ของ <code>/api/cases</code> และ <code>/api/sessions</code></li><li>path ที่ไม่ตรงกับอะไรเลยตอบ 404</li><li><code>errorHandler</code> ปิดท้าย Express 5 จะส่ง error จาก handler แบบ async มาที่นี่เองโดยไม่ต้องเขียน try/catch</li></ol>
+        แยก createApp ออกจาก index.ts ไว้ เพื่อให้เขียน test ที่สร้าง app ได้โดยไม่ต้องเปิด port</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-config">
+    <header><span class="path">src/config/env.ts · src/db/prisma.ts · src/db/includes.ts</span></header>
+    <dl class="fns">
+      <dt>env</dt>
+      <dd>ตรวจ <code>process.env</code> ด้วย zod ตอนเปิดโปรแกรม: แปลง PORT เป็นตัวเลข (<code>coerce</code>) และใส่ค่า default ให้ ถ้าไม่มี DATABASE_URL จะ error ทันทีพร้อมข้อความบอก ดีกว่าไปพังทีหลังตอนมี request แรก</dd>
+      <dt>prisma</dt>
+      <dd>สร้าง PrismaClient ตัวเดียวใช้ทั้งโปรแกรม โดยส่ง <code>PrismaPg</code> adapter ที่ถือ <code>DATABASE_URL</code> เข้าไป (Prisma 7 บังคับให้มี adapter) adapter เป็นเจ้าของ connection pool ถ้าสร้างหลายตัวจะเปลือง connection</dd>
+      <dt>caseFile · sessionWithCase · sessionOnly</dt>
+      <dd>ชุด <code>include</code> ที่ใช้ร่วมกัน: ดึงแถวลูก (suspects, evidence) พร้อมเรียงตาม <code>position</code> ทุกครั้ง เพราะ SQL ไม่รับประกันลำดับแถวถ้าไม่สั่ง <code>ORDER BY</code></dd>
+    </dl>
+  </article>
+
+  <h3 class="sub">Engine (กติกาเกม)</h3>
+
+  <article class="file" id="be-engine-types">
+    <header><span class="path">src/engine/types.ts</span><span class="tag pure">Pure</span></header>
+    <p>type ของ engine เขียนแยกเองเป็นข้อมูลธรรมดา ไม่ import จาก Prisma จึงไม่ผูกกับ DB และย้ายไปใช้ที่อื่นได้: <code>Mood</code>, <code>SuspectState</code>, <code>Intent</code> (question / confrontation / accusation / smalltalk), <code>ReplyKind</code></p>
+  </article>
+
+  <article class="file" id="be-questions">
+    <header><span class="path">src/engine/questions.ts</span><span class="tag pure">Pure</span></header>
+    <dl class="fns">
+      <dt>MAX_QUESTIONS = 10 · INITIAL_COMPOSURE = 100</dt><dd>ค่าคงที่ตามกติกาเกม</dd>
+      <dt>createSuspectState(suspectId) <span class="sig">→ SuspectState</span></dt><dd>state เริ่มต้น: composure 100, คำถาม 10, mood calm และรายการต่างๆ ว่างเปล่า</dd>
+      <dt>spendQuestion(state) <span class="sig">→ { ok: true, state } | { ok: false, reason: 'LAWYERED_UP' }</span></dt>
+      <dd>หักคำถาม 1 ข้อ ถ้าเหลือ 0 อยู่แล้วจะคืน <code>ok: false</code> แทนการ throw error ทำให้ผู้เรียกต้องจัดการทั้งสองกรณี (TypeScript บังคับให้เช็ก <code>ok</code> ก่อนถึงจะใช้ <code>state</code> ได้) และคืน object ใหม่เสมอ ไม่แก้ตัวเดิม ตามรูปแบบ <code>(state, action) =&gt; newState</code></dd>
+      <dt>isLawyeredUp(state) <span class="sig">→ boolean</span></dt><dd>true เมื่อคำถามหมด</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-verdict">
+    <header><span class="path">src/engine/verdict.ts</span><span class="tag pure">Pure</span></header>
+    <dl class="fns">
+      <dt>questionsUsed(suspects) <span class="sig">→ number</span></dt><dd>รวมจำนวนคำถามที่ใช้ไปของทุกคน (10 − ที่เหลือ)</dd>
+      <dt>starRating(used, suspectCount) <span class="sig">→ 1 | 2 | 3</span></dt><dd>งบคำถามทั้งหมด = จำนวนคน × 10 ใช้ไม่เกิน 1/3 ได้ 3 ดาว, ไม่เกิน 2/3 ได้ 2 ดาว, มากกว่านั้นได้ 1 ดาว</dd>
+      <dt>judgeAccusation(culpritId, accusedId, suspects) <span class="sig">→ Verdict</span></dt><dd>ถ้าจับผิดคน ได้ <code>COLD</code> 0 ดาว ถ้าถูก ได้ <code>SOLVED</code> พร้อมดาวจาก starRating</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-tests">
+    <header><span class="path">src/engine/questions.test.ts · verdict.test.ts</span><span class="tag test">Test</span></header>
+    <p>unit test 5 ตัวที่รันได้โดยไม่ต้องมี DB หรือ LLM (<code>pnpm test</code>) เช็กว่าหักคำถามแล้วของเดิมไม่ถูกแก้, ถามได้ครบ 10 ข้อพอดีแล้วข้อที่ 11 ถูกปฏิเสธ, เกณฑ์ดาวที่ขอบแต่ละช่วง (10/11, 20/21) และผล SOLVED/COLD</p>
+  </article>
+
+  <h3 class="sub">LLM และ HTTP</h3>
+
+  <article class="file" id="be-llm">
+    <header><span class="path">src/llm/provider.ts</span><span class="tag dummy">Dummy</span></header>
+    <p>ทุกการเรียก LLM ต้องผ่านไฟล์นี้ (ตามกฎใน CLAUDE.md) จะเปลี่ยนไปใช้ hosted API หรือโมเดลของตัวเองก็แก้ที่นี่ที่เดียว</p>
+    <dl class="fns">
+      <dt>LlmRequest</dt><dd><code>system</code> (prompt ที่ promptBuilder จะสร้าง โดยใส่เฉพาะสิ่งที่ผู้ต้องสงสัยพูดได้) และ <code>messages</code> (ประวัติการคุย)</dd>
+      <dt>interface LlmProvider · generate(req)</dt><dd>สัญญาว่า provider ทุกตัวต้องมีเมธอด generate ที่คืนข้อความ</dd>
+      <dt>DummyProvider · llm</dt><dd>ตอนนี้คืนประโยคตายตัว และ <code>llm</code> คือ provider ที่ทั้งโปรแกรมใช้</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-errors">
+    <header><span class="path">src/http/errors.ts</span></header>
+    <dl class="fns">
+      <dt>class HttpError(status, code, message)</dt><dd>error ที่รู้ว่าควรตอบ HTTP status อะไร เช่น 403 + <code>LAWYERED_UP</code></dd>
+      <dt>notFound(what)</dt><dd>ตัวช่วยสร้าง HttpError 404 เช่น "Session not found"</dd>
+      <dt>parseId(id, what)</dt><dd>id ใน URL ต้องเป็น UUID ถ้าไม่ใช่ แปลว่าไม่มีทางมีอยู่จริง จึง throw 404 ทันทีโดยไม่ถาม DB (Postgres จะ error ถ้าส่ง id ที่ไม่ใช่ UUID เข้าไป)</dd>
+      <dt>errorHandler</dt><dd>แปลง error ทุกชนิดเป็น JSON รูปแบบเดียวกัน <code>{ error: { code, message } }</code>:
+        <ul><li>HttpError → ตาม status ที่กำหนด</li><li>ZodError (body ไม่ถูกต้อง) → 400 พร้อมรายการจุดที่ผิด</li><li>อย่างอื่น → log ไว้ฝั่ง server แล้วตอบ 500 ข้อความกลางๆ ไม่ส่งรายละเอียดภายในออกไป</li></ul></dd>
+    </dl>
+  </article>
+
+  <h3 class="sub">Services (เชื่อม engine + llm + db)</h3>
+
+  <article class="file" id="be-publicview">
+    <header><span class="path">src/services/publicView.ts</span><span class="tag guard">กันข้อมูลรั่ว</span></header>
+    <p>response ทุกอันต้องผ่านฟังก์ชันในไฟล์นี้ ใช้วิธีเลือกเฉพาะฟิลด์ที่อนุญาต (whitelist) แทนการลบฟิลด์ลับออก (blacklist) ถ้าวันหน้าเพิ่มฟิลด์ลับใหม่เข้า schema มันจะไม่หลุดออกไปเอง</p>
+    <dl class="fns">
+      <dt>toPublicCaseSummary(c)</dt><dd>id, slug, title, number สำหรับหน้ารายการคดี</dd>
+      <dt>toPublicCase(c)</dt><dd>สรุปคดี + ผู้ต้องสงสัย (ไม่รวม closer) + หลักฐาน และไม่มีคอลัมน์ความจริงของคดี (culpritId, verdict, reactions) เลย</dd>
+      <dt>toPublicSession(s)</dt><dd>สถานะ session และ state รายคน ไม่รวม <code>version</code>, <code>commitments</code> และ <code>position</code></dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-caseservice">
+    <header><span class="path">src/services/caseService.ts</span></header>
+    <dl class="fns">
+      <dt>listCases()</dt><dd>ดึงคดีทั้งหมด โดยใช้ <code>select</code> เอามาแค่ 4 ฟิลด์ตั้งแต่ตอน query ไม่ได้ดึงคอลัมน์ความจริงของคดีออกมาจาก DB เลย</dd>
+      <dt>getCase(id)</dt><dd>ดึงคดีเดียว ถ้าไม่เจอ throw 404 แล้วส่งผ่าน toPublicCase</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-sessionservice">
+    <header><span class="path">src/services/sessionService.ts</span><span class="tag dummy">Dummy บางส่วน</span></header>
+    <dl class="fns">
+      <dt>reactionSchema · reactionsSchema</dt><dd>zod schema สำหรับตรวจ <code>reactions</code> ของคดีที่เก็บเป็น Json (Prisma ไม่รู้รูปแบบข้างใน) ตรวจก่อนใช้จะได้ type ที่ถูกต้อง และรู้ทันทีถ้าข้อมูลใน DB ผิดรูปแบบ</dd>
+      <dt>loadSession(id)</dt><dd>ดึง session พร้อมข้อมูลคดีและแถว state ของผู้ต้องสงสัย (<code>sessionWithCase</code>) ถ้าไม่เจอ throw 404</dd>
+      <dt>toEngineState(row)</dt><dd>แปลงแถว <code>suspect_states</code> เป็น <code>SuspectState</code> ธรรมดาของ engine โดยตัด <code>sessionId</code>/<code>position</code> ออก จะได้ไม่หลุดเข้า engine และไม่หลุดเข้า snapshot ใน transcript</dd>
+      <dt>saveSession(session, { suspect?, status?, accusedId? })</dt>
+      <dd>เขียนกลับลง DB แบบ <b>optimistic concurrency</b> คืออัปเดตเฉพาะเมื่อ <code>version</code> ใน DB ยังเท่ากับตอนที่อ่านมา และบวก version เพิ่ม 1 ถ้าระหว่างนั้นมี request อื่นเขียนไปก่อน (เช่นกดถามรัวๆ 2 ครั้งพร้อมกัน) version จะไม่ตรง ได้ <code>count === 0</code> แล้วตอบ 409 การเช็ก version กับการอัปเดตแถว suspect อยู่ใน <b>transaction เดียวกัน</b> ถ้าชนกัน ทั้งสองอย่างถูกยกเลิกพร้อมกัน วิธีนี้ทำให้โกงจำนวนคำถามด้วยการยิง request พร้อมกันไม่ได้</dd>
+      <dt>createSession(caseId)</dt><dd>สร้าง session ใหม่พร้อมแถว state ของทุกคนที่เริ่มด้วย <code>createSuspectState</code> (ใส่ <code>position</code> ตามลำดับในคดี) และตอนนี้เปิดให้เห็นหลักฐานทุกชิ้นตั้งแต่แรก (Dummy จนกว่าจะมีฉากสืบสวน)</dd>
+      <dt>getSession(id)</dt><dd>โหลดแล้วส่งผ่าน toPublicSession</dd>
+      <dt>interrogate(sessionId, { suspectId, message, evidenceId? })</dt>
+      <dd>ขั้นตอนของหนึ่งตา:
+        <ol>
+          <li>ถ้าคดีจบไปแล้ว ตอบ 409 CASE_OVER</li>
+          <li>หาผู้ต้องสงสัย ถ้าไม่เจอตอบ 404 ถ้ายื่นหลักฐานที่ยังไม่ได้ค้นพบตอบ 400</li>
+          <li><code>spendQuestion</code> หักคำถาม ถ้าหมดแล้วตอบ 403 LAWYERED_UP (นับที่ server เท่านั้น)</li>
+          <li>(Dummy) แยก intent ง่ายๆ: มีหลักฐาน = confrontation ไม่มี = question</li>
+          <li>(Dummy) เลือกคำตอบ: ถ้ายื่นซ้ำได้คำตอบ "ยื่นซ้ำ", ถ้ามี reaction ได้ reaction และ mood ใหม่, นอกนั้นเรียก <code>llm.generate</code></li>
+          <li>เพิ่มหลักฐานลงใน confrontedEvidence</li>
+          <li><code>saveSession</code> แล้วบันทึก transcript (turn = จำนวนตาที่มีอยู่ + 1)</li>
+          <li>ตอบกลับ reply, kind, note, lawyeredUp และ closer เมื่อเพิ่งหมดคำถาม พร้อม state สาธารณะของคนนี้</li>
+        </ol></dd>
+      <dt>accuse(sessionId, accusedId)</dt><dd>เช็กว่าคดียังไม่จบและมีคนนี้อยู่จริง แล้วเรียก <code>judgeAccusation</code> บันทึก status กับ accusedId จากนั้นค่อยเปิดเผยคำอธิบายคดี ซึ่งเป็นจุดเดียวที่ข้อความสรุปคดี (verdictCorrect/verdictWrong) ถูกส่งออกไป และส่งได้เพราะคดีจบแล้ว</dd>
+    </dl>
+  </article>
+
+  <h3 class="sub">Routes (REST API)</h3>
+
+  <article class="file" id="be-routes-cases">
+    <header><span class="path">src/routes/cases.ts</span></header>
+    <dl class="fns">
+      <dt>GET /api/cases</dt><dd>เรียก listCases</dd>
+      <dt>GET /api/cases/:id</dt><dd>เรียก getCase</dd>
+    </dl>
+  </article>
+
+  <article class="file" id="be-routes-sessions">
+    <header><span class="path">src/routes/sessions.ts</span></header>
+    <p>route ทำแค่ 2 อย่าง คือตรวจ body ด้วย zod แล้วส่งต่อให้ service งาน logic ทั้งหมดอยู่ใน service</p>
+    <dl class="fns">
+      <dt>createBody · interrogateBody · accuseBody</dt><dd>schema ของ body เช่น <code>message</code> ต้องยาว 1–200 ตัวอักษรหลังตัดช่องว่าง และ <code>evidenceId</code> ไม่บังคับ</dd>
+      <dt>POST /api/sessions</dt><dd>สร้าง session ตอบ 201</dd>
+      <dt>GET /api/sessions/:id</dt><dd>ดูสถานะ</dd>
+      <dt>POST /api/sessions/:id/interrogate</dt><dd>ถามหรือยื่นหลักฐาน</dd>
+      <dt>POST /api/sessions/:id/accuse</dt><dd>กล่าวหา</dd>
+    </dl>
+  </article>
+</section>
+
+<!-- ================= ROOT ================= -->
+<section class="group" data-group="Root">
+  <h2>ไฟล์ระดับโปรเจกต์ <small>root ของ repo</small></h2>
+  <article class="file" id="root-claude">
+    <header><span class="path">CLAUDE.md</span></header>
+    <p>บริบทของโปรเจกต์สำหรับ Claude Code: หลัก "LLM เป็นเสียง ไม่ใช่สมอง", กติกาเกม, tech stack, ผังโฟลเดอร์, ตาราง REST API, กฎการเขียนโค้ดและเขียนคดี, ดีไซน์ pixel art และแผนการเรียน ML</p>
+  </article>
+  <article class="file" id="root-gitignore">
+    <header><span class="path">.gitignore · .claude/launch.json</span></header>
+    <p><code>.gitignore</code> กันไม่ให้ไฟล์เหล่านี้ขึ้น git: node_modules, dist, ไฟล์ .env (ซึ่งเก็บความลับ), log, ไฟล์ Python และ weight ของโมเดล ML, ค่าตั้งส่วนตัวของ Claude และไฟล์ขยะของ editor/OS ส่วน <code>.claude/launch.json</code> บอกวิธีเปิด dev server ของ frontend ให้ preview ในแอป</p>
+  </article>
+</section>
+
+      <p class="empty" id="noResults">ไม่พบไฟล์หรือฟังก์ชันที่ตรงกับคำค้น</p>
+    </main>
+  </div>
+</div>
+
+<script>
+(() => {
+  const files = [...document.querySelectorAll('article.file')]
+  const toc = document.getElementById('tocList')
+  const groups = [...document.querySelectorAll('section.group')]
+
+  // Build the index from the articles so it never drifts from the content
+  groups.forEach((g) => {
+    const h = document.createElement('h3')
+    h.textContent = g.dataset.group
+    const ul = document.createElement('ul')
+    g.querySelectorAll('article.file').forEach((a) => {
+      const li = document.createElement('li')
+      const link = document.createElement('a')
+      link.href = '#' + a.id
+      link.textContent = a.querySelector('.path').textContent.replace(/^(frontend|backend)\//, '')
+      link.dataset.for = a.id
+      li.appendChild(link)
+      ul.appendChild(li)
+    })
+    toc.append(h, ul)
+  })
+
+  const q = document.getElementById('q')
+  const none = document.getElementById('noResults')
+  q.addEventListener('input', () => {
+    const term = q.value.trim().toLowerCase()
+    let shown = 0
+    files.forEach((a) => {
+      const hit = !term || a.textContent.toLowerCase().includes(term)
+      a.hidden = !hit
+      const link = toc.querySelector(`a[data-for="${a.id}"]`)
+      if (link) link.parentElement.hidden = !hit
+      if (hit) shown++
+    })
+    groups.forEach((g) => {
+      g.querySelectorAll('h3.sub').forEach((h) => {
+        let n = h.nextElementSibling, any = false
+        while (n && !n.matches('h3.sub')) { if (n.matches('article.file') && !n.hidden) any = true; n = n.nextElementSibling }
+        h.hidden = !any
+      })
+      g.hidden = !g.querySelector('article.file:not([hidden])')
+    })
+    none.style.display = shown ? 'none' : 'block'
+  })
+})()
+</script>

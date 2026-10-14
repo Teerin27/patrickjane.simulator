@@ -1,24 +1,20 @@
-# Local MongoDB as a single-node replica set (Prisma needs a replica set for writes).
+# Local PostgreSQL for development.
 services:
-  mongo:
-    image: mongo:7
-    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: patrickjane
+      POSTGRES_PASSWORD: patrickjane
+      POSTGRES_DB: patrickjane
     ports:
-      - "27017:27017"
+      - "5432:5432"
     volumes:
-      - mongo-data:/data/db
+      - pg-data:/var/lib/postgresql/data
     healthcheck:
-      # Initiates the replica set on first start; no-op afterwards
-      test:
-        - CMD
-        - mongosh
-        - --quiet
-        - --eval
-        - "try { rs.status() } catch (e) { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'localhost:27017' }] }) }"
+      test: ["CMD-SHELL", "pg_isready -U patrickjane -d patrickjane"]
       interval: 5s
-      timeout: 30s
-      start_period: 5s
-      retries: 30
+      timeout: 5s
+      retries: 10
 
 volumes:
-  mongo-data:
+  pg-data:

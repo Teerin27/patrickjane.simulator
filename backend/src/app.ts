@@ -2,7 +2,9 @@ import cors from 'cors'
 import express from 'express'
 import { env } from './config/env.js'
 import { errorHandler, notFound } from './http/errors.js'
+import { authRouter } from './routes/auth.js'
 import { casesRouter } from './routes/cases.js'
+import { playersRouter } from './routes/players.js'
 import { sessionsRouter } from './routes/sessions.js'
 
 export function createApp() {
@@ -13,7 +15,9 @@ export function createApp() {
   app.get('/api/health', (_req, res) => {
     res.json({ ok: true })
   })
+  app.use('/api/auth', authRouter)
   app.use('/api/cases', casesRouter)
+  app.use('/api/players', playersRouter)
   app.use('/api/sessions', sessionsRouter)
 
   app.use((_req, _res, next) => next(notFound('Route')))

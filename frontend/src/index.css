@@ -1,6 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 @import 'tailwindcss';
 
+/* Palette from CLAUDE.md as theme tokens: bg-night-900, text-brass-400, border-blood-500, ...
+   Names are our own (not amber/teal) so they never shadow Tailwind's default colours. */
+@theme {
+  --color-night-950: #0f1220; /* shadows, darkest to lightest */
+  --color-night-900: #1b2033;
+  --color-night-800: #2c3350;
+  --color-paper-100: #f4ecd8; /* light text */
+  --color-paper-200: #e6d5ae; /* paper */
+  --color-paper-300: #c4a97a;
+  --color-paper-400: #8a6e4b;
+  --color-brass-300: #ffd97a; /* amber accent */
+  --color-brass-400: #f2b33d;
+  --color-brass-600: #c27c1e;
+  --color-blood-500: #c8323c; /* crimson: contradiction / danger */
+  --color-blood-800: #7a1e2a;
+  --color-truth-300: #8fd6d2; /* teal: truth / success */
+  --color-truth-500: #4fa3a0;
+  --color-truth-700: #2d6466;
+  --color-ink: #1a1414; /* dark text */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-body: 'VT323', monospace;
+}
+
 html,
 body,
 #root {
@@ -83,6 +106,14 @@ body,
   --down: var(--b-teal-d);
   color: #f4ecd8;
 }
+.btn.dark {
+  --up: var(--b-dark);
+  --down: var(--b-dark-d);
+  color: var(--color-paper-100);
+}
+.btn.dark:hover:not(:disabled):not(.on) {
+  border-image-source: var(--b-dark-h);
+}
 .btn.on {
   border-image-source: var(--b-amber-d);
   transform: translateY(1px);
@@ -105,6 +136,21 @@ body,
 input:focus-visible {
   outline: 1px solid #f2b33d;
   outline-offset: 1px;
+}
+
+/* Menu title: chunky 2-step pixel drop shadow (offsets are in stage px, so they stay crisp) */
+.logo {
+  font-family: var(--font-pixel);
+  text-transform: uppercase;
+  color: var(--color-brass-400);
+  text-shadow:
+    1px 1px 0 var(--color-blood-800),
+    2px 2px 0 var(--color-ink);
+}
+
+/* 1px dark edge so small text stays readable over the busy dithered backdrop */
+.ink-shadow {
+  text-shadow: 1px 1px 0 var(--color-night-950);
 }
 
 .scroll {
@@ -138,6 +184,25 @@ input:focus-visible {
 }
 .blink {
   animation: blink 0.8s steps(1) infinite;
+}
+
+/* Panels step up into place in 5 frames, in keeping with the pixel look */
+@keyframes rise {
+  from {
+    transform: translateY(24px);
+  }
+  to {
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.25s steps(5) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .blink {
+    animation: none;
+  }
 }
 
 ::selection {

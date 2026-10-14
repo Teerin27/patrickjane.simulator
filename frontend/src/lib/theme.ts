@@ -15,4 +15,7 @@ export const stageVars = {
   '--b-teal': nine('#4FA3A0', '#8FD6D2', '#2D6466', 2),
   '--b-teal-d': nine('#4FA3A0', '#2D6466', '#8FD6D2', 2),
   '--b-off': nine('#8A6E4B', '#C4A97A', '#2C3350', 2),
+  '--b-dark': nine('#1B2033', '#2C3350', '#0F1220', 2),
+  '--b-dark-d': nine('#1B2033', '#0F1220', '#2C3350', 2),
+  '--b-dark-h': nine('#1B2033', '#F2B33D', '#C27C1E', 2),
 } as CSSProperties

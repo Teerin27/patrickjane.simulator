@@ -1,4 +1,4 @@
-import type { Case, Session } from '@prisma/client'
+import type { Case, CaseEvidence, CaseSuspect, Player, Session, SuspectState } from '../generated/prisma/client.js'
 
 // Every API response goes through one of these. They whitelist fields so
 // ground truth (culprit, reactions, verdict text) can never leak to the client.
@@ -10,13 +10,47 @@ export const toPublicCaseSummary = (c: Pick<Case, 'id' | 'slug' | 'title' | 'num
   number: c.number,
 })
 
-export const toPublicCase = (c: Case) => ({
+/** One entry of the case list: enough to choose by (the briefing, and who is in it), nothing about what happened. */
+export const toPublicCaseCard = (c: Pick<Case, 'id' | 'slug' | 'title' | 'number' | 'briefing'> & { suspects: Pick<CaseSuspect, 'id' | 'short' | 'role' | 'look'>[] }) => ({
   ...toPublicCaseSummary(c),
-  suspects: c.suspects.map(({ id, short, surname, role, alibi, opener }) => ({ id, short, surname, role, alibi, opener })),
+  briefing: c.briefing,
+  suspects: c.suspects.map(({ id, short, role, look }) => ({ id, short, role, look })),
+})
+
+export const toPublicCase =(c: Case & { suspects: CaseSuspect[]; evidence: CaseEvidence[] }) => ({
+  ...toPublicCaseSummary(c),
+  briefing: c.briefing,
+  suspects: c.suspects.map(({ id, short, surname, role, alibi, opener, fullName, age, address, tie, whereabouts, look }) => ({
+    id,
+    look,
+    short,
+    surname,
+    role,
+    alibi,
+    opener,
+    fullName,
+    age,
+    address,
+    tie,
+    whereabouts,
+  })),
   evidence: c.evidence.map(({ id, tag, name, sprite, note }) => ({ id, tag, name, sprite, note })),
 })
 
-export const toPublicSession = (s: Session) => ({
+// Listings show a player's public face only; the email is part of the account view.
+export const toPublicPlayer = (p: Pick<Player, 'id' | 'username' | 'createdAt'>) => ({
+  id: p.id,
+  username: p.username,
+  createdAt: p.createdAt,
+})
+
+export const toPlayerAccount = (p: Player) => ({
+  ...toPublicPlayer(p),
+  email: p.email,
+  updatedAt: p.updatedAt,
+})
+
+export const toPublicSession =(s: Session & { suspects: SuspectState[] }) => ({
   id: s.id,
   caseId: s.caseId,
   status: s.status,

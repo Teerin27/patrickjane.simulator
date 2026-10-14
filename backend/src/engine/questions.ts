@@ -10,6 +10,7 @@ export function createSuspectState(suspectId: string): SuspectState {
     questionsRemaining: MAX_QUESTIONS,
     mood: 'calm',
     commitments: [],
+    brokenClaims: [],
     confrontedEvidence: [],
     revealedSecrets: [],
   }

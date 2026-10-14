@@ -7,8 +7,12 @@ export type SuspectState = {
   composure: number
   questionsRemaining: number
   mood: string
+  /** Ids of the claims this suspect has stated and is now bound to. */
   commitments: string[]
+  /** Ids of the claims the player has disproved. Always a subset of `commitments`. */
+  brokenClaims: string[]
   confrontedEvidence: string[]
+  /** Ids of the secrets that have come out (including a murder confession). */
   revealedSecrets: string[]
 }
 

@@ -5,20 +5,27 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch --env-file=.env src/index.ts",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "prisma generate && tsc -p tsconfig.build.json",
     "start": "node --env-file=.env dist/index.js",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
     "db:seed": "tsx --env-file=.env prisma/seed.ts",
+    "case:generate": "tsx --env-file=.env scripts/generateCase.ts",
+    "case:validate": "tsx scripts/validateCases.ts",
     "db:studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.3",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "cors": "^2.8.5",
     "express": "^5.2.1",
+    "pg": "^8.13.0",
     "zod": "^4.6.5"
   },
   "pnpm": {
@@ -28,7 +35,9 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.0.0",
-    "prisma": "^6.19.3",
+    "@types/pg": "^8.11.0",
+    "dotenv": "^16.4.0",
+    "prisma": "^7.10.0",
     "tsx": "^4.23.15",
     "typescript": "^5.7.0",
     "vitest": "^4.1.11"

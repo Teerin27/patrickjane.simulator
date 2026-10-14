@@ -1,55 +1,109 @@
-// Prisma schema for MongoDB.
-// Composite `type`s are embedded documents (not separate collections).
+// Prisma schema for PostgreSQL.
+// The connection URL lives in prisma.config.ts (Prisma 7); the app connects through a driver adapter.
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
 }
 
 // ---------- cases: read-only case files, server only ----------
 
 model Case {
-  id       String         @id @default(auto()) @map("_id") @db.ObjectId
+  id       String         @id @default(uuid()) @db.Uuid
   slug     String         @unique
   title    String
   number   String
+  /// What the player is told up front: where, who died, when it was found.
+  briefing String
   suspects CaseSuspect[]
   evidence CaseEvidence[]
-  /// Ground truth. NEVER send to the client.
-  truth    CaseTruth
   sessions Session[]
+
+  // Ground truth. NEVER send to the client.
+  culpritId      String
+  verdictCorrect String
+  verdictWrong   String
+  /// What really happened, validated by `truthSchema` (src/caseFile/schema.ts): story, timeline, each
+  /// suspect's persona, true whereabouts, claims and secrets, and the evidence graph.
+  truth          Json
 
   @@map("cases")
 }
 
-type CaseSuspect {
-  id      String
-  short   String
-  surname String
-  role    String
-  alibi   String
-  opener  String
-  closer  String
+/// Public police-file data only; never put ground truth here.
+model CaseSuspect {
+  caseId      String @db.Uuid
+  case        Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  id          String
+  /// Display order within the case.
+  position    Int
+  short       String
+  surname     String
+  role        String
+  alibi       String
+  opener      String
+  closer      String
+  fullName    String
+  age         Int
+  address     String
+  tie         String
+  /// What they CLAIM to the police: [{ time, place }]. Whether it is true stays in cases.truth.
+  whereabouts Json
+  /// How they are drawn: skin, hair, facial hair, glasses, hat, outfit (see `lookSchema`).
+  look        Json
+
+  @@id([caseId, id])
+  @@map("case_suspects")
 }
 
-type CaseEvidence {
-  id     String
-  tag    String
-  name   String
-  sprite String
-  note   String
+model CaseEvidence {
+  caseId   String @db.Uuid
+  case     Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  id       String
+  /// Display order within the case.
+  position Int
+  tag      String
+  name     String
+  sprite   String
+  note     String
+
+  @@id([caseId, id])
+  @@map("case_evidence")
 }
 
-type CaseTruth {
-  culpritId      String
-  verdictCorrect String
-  verdictWrong   String
-  /// (DUMMY) suspectId -> evidenceId -> reaction. Will be replaced by the evidence graph.
-  reactions      Json
+// ---------- players: player accounts ----------
+
+model Player {
+  id           String      @id @default(uuid()) @db.Uuid
+  /// Stored lowercase, so the unique index is effectively case-insensitive.
+  username     String      @unique
+  /// Stored lowercase, same reason.
+  email        String      @unique
+  /// scrypt hash in the form `scrypt$N$r$p$salt$hash`. NEVER send to the client.
+  passwordHash String
+  authTokens   AuthToken[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("players")
+}
+
+/// Login tokens. The raw token is shown to the client once; only its SHA-256 is stored,
+/// so a database leak does not hand out working logins.
+model AuthToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  tokenHash String   @unique
+  playerId  String   @db.Uuid
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([playerId])
+  @@map("auth_tokens")
 }
 
 // ---------- sessions: player progress ----------
@@ -61,8 +115,8 @@ enum SessionStatus {
 }
 
 model Session {
-  id                 String         @id @default(auto()) @map("_id") @db.ObjectId
-  caseId             String         @db.ObjectId
+  id                 String         @id @default(uuid()) @db.Uuid
+  caseId             String         @db.Uuid
   case               Case           @relation(fields: [caseId], references: [id])
   status             SessionStatus  @default(ACTIVE)
   suspects           SuspectState[]
@@ -78,21 +132,30 @@ model Session {
   @@map("sessions")
 }
 
-type SuspectState {
+model SuspectState {
+  sessionId          String   @db.Uuid
+  session            Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   suspectId          String
+  /// Display order within the session (same as the case's suspect order).
+  position           Int
   composure          Int
   questionsRemaining Int
   mood               String
   commitments        String[]
+  /// Claims the player has disproved (a subset of commitments).
+  brokenClaims       String[] @default([])
   confrontedEvidence String[]
   revealedSecrets    String[]
+
+  @@id([sessionId, suspectId])
+  @@map("suspect_states")
 }
 
 // ---------- transcripts: append-only turn log (future fine-tuning data) ----------
 
 model Transcript {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionId     String   @db.ObjectId
+  id            String   @id @default(uuid()) @db.Uuid
+  sessionId     String   @db.Uuid
   session       Session  @relation(fields: [sessionId], references: [id])
   suspectId     String
   turn          Int
